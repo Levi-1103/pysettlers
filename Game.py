@@ -1,4 +1,4 @@
-from Board import *
+from BoardList import *
 import Coords
 
 map = Coords.initMap()
