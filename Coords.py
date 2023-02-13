@@ -1,4 +1,3 @@
-import collections
 def initMap():
     q = 0
     r = 0
@@ -20,24 +19,6 @@ def initMap():
 def printMap(map):
     for row in map:
         print(row)
-
-# for q in range(-2,3,1):
-#     for r in range(-2,3,1):
-#         grid.append((q,r))
-
-
-
-# for i in range(25):
-#     print(grid[i])
-
-# _Hex = collections.namedtuple("Hex", ['q','r'])
-
-# def Hex(q,r):
-#         return _Hex(q,r)
-
-
-#print(initMap())
-
 
 
 

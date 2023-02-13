@@ -1,7 +1,6 @@
 import random
-from pprint import pprint
 from TileResource import TileResource
-
+from Tile import *
 #generate list of resources
 def tiles():
         tiles = []
@@ -35,13 +34,6 @@ def tileNum():
         tileNums.append(7)
 
         return tileNums
-
-
-# create class for individual tile data
-class Hex:
-    def __init__(self, resource, roll):
-        self.resource = resource
-        self.roll = roll
 
 
 #store tile and roll nums
@@ -89,9 +81,11 @@ for i in range(5):
         for j in range(5):
             if map.get((i,j)) != None:
                 #fix tile add
-                map.update({(i,j): Hex(shuffle[0][0],shuffle[0][1])})
+                map.update({(i,j): Tile(shuffle[0][0],shuffle[0][1])})
 
 
 print('')
+
+print(map.items())
 
 
