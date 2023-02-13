@@ -1,5 +1,4 @@
 import collections
-
 def initMap():
     q = 0
     r = 0

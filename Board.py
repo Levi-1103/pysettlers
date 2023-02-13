@@ -4,11 +4,7 @@ import random
 from TileResource import TileResource
 
 
-class Board():
-    def __init__(self, game):
-        self.game = game
-
-    def tiles():
+def tiles():
         tiles = []
 
         for i in range(4):
@@ -26,7 +22,7 @@ class Board():
 
         return tiles
 
-    def tileNum():
+def tileNum():
         tileNums = []
         for i in range(3, 12):
             if i == 7:
@@ -39,9 +35,6 @@ class Board():
 
         random.shuffle(tileNums)
         return tileNums
-
-    hexRes = tiles()
-    hexNum = tileNum()
 
 
 class Hex:
