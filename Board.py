@@ -68,7 +68,7 @@ def setupBoard(tiledata):
     for i in range(5):
         for j in range(5):
             if grid.get((i,j)) != None:
-                grid.update({(i,j): Tile(tiledata[num][0],tiledata[num][1])})
+                grid.update({(i,j): Tile(*tiledata.pop())})
                 num = num + 1
 
                     

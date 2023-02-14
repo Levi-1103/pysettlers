@@ -20,8 +20,6 @@ settings_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((650, 4
 
 quit_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((950, 480), (100, 50)), text='Quit', manager=manager)
 
-quit_x = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((1080, 100), (100, 50)), text='X', manager=manager)
-
 #minimize_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 100), (100, 50)), text='_', manager=manager)
 
 #credits_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 100), (100, 50)), text='Credits', manager=manager)
