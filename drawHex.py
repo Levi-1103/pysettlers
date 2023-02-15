@@ -6,3 +6,5 @@ def hexToPixel(size, q, r):
     y = size * (3 / 2 * r)
     return (x , y)
 
+
+print(hexToPixel(25,4,4))

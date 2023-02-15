@@ -12,6 +12,8 @@ def importBoardFile(filename):
 
     for x in storefile.values():
         boardData.append((TileResource(x[0]),x[1]))
+
+    boardData.reverse()
     
     return boardData
 

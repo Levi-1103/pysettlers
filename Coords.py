@@ -1,3 +1,4 @@
+#other option for making the grid uses list instead of dictionary
 def initMap():
     q = 0
     r = 0

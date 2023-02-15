@@ -1,4 +1,5 @@
 import random
+from JSONImport import importBoardFile
 from Tile import *
 class Board:
     def __init__(self) -> None:
@@ -51,7 +52,7 @@ def createHexGrid():
     for q in range(5):
         for r in range(5):
             grid.update({(q,r) : ''})
-#update map with null tiles
+#update map with null tiles possibly better option to have empty strings
     grid.update({(0,0): None})
     grid.update({(1,0): None})
     grid.update({(0,1): None})
@@ -75,23 +76,12 @@ def setupBoard(tiledata):
     
     return grid
 
-testboard = setupBoard(generateTileData())
+def printBoardData(board):
+    for val in board.values():
+        if val != None:
+            print(val.__dict__)
 
+testboard = setupBoard(importBoardFile("BeginnerBoard.json"))
 
+printBoardData(testboard)
 
-print(testboard[(1,1)].__dict__)
-
-print(testboard.values())
-
-test = []
-
-for val in testboard.values():
-    test.append(val)
-
-count  = 0
-for i in test:
-    if i != None:
-        print(i.__dict__)
-        count  = count + 1
-
-print(count)
