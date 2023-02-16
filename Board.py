@@ -1,6 +1,14 @@
 import random
 from JSONImport import importBoardFile
 from Tile import *
+from collections import namedtuple
+from Building import *
+
+
+Hex  =  namedtuple("Hex","q r")
+Vertex = namedtuple("Vertex", "q r v")
+Edge  = namedtuple("Edge", "q r e")
+
 class Board:
     def __init__(self) -> None:
         pass
@@ -83,5 +91,21 @@ def printBoardData(board):
 
 testboard = setupBoard(importBoardFile("BeginnerBoard.json"))
 
-printBoardData(testboard)
+def createVertexGrid():
+    grid = {}
+    for q in range(-2,6):
+        for r in range(-2,6):
+            grid.update({Vertex(q,r,'N') : Building()})
+            grid.update({Vertex(q,r,'S') : Building()})
+    return grid
 
+def createEdges():
+    grid = {}
+    for q in range(5):
+        for r in range(5):
+            grid.update({Edge(q,r,'NW') : Road()})
+            grid.update({Edge(q,r,'NE') : Road()})
+            grid.update({Edge(q,r,'W') : Road()})
+    return grid
+
+testgrid  = createVertexGrid()

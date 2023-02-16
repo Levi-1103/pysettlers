@@ -36,3 +36,15 @@ print(tileInfo(map[3][0]))
 #possibly change list to hashmap
 #iterate through dict of edges check if it has owner
 # if its owned by a player add to point total
+
+#main game class that will be created when game is started
+#store game data which later than can be saved and reloaded
+
+#correlate points grid to hex height
+#add default sprites marking empty spot
+#add code for changi sprite to different icon when clicked
+#store points in dict in fomrat (q,r,N/S)
+#if N add to coord if S minus??
+
+#use named tuple for coords in dict ??
+

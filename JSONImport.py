@@ -16,6 +16,3 @@ def importBoardFile(filename):
     boardData.reverse()
     
     return boardData
-
-
-print(importBoardFile("BeginnerBoard.json"))

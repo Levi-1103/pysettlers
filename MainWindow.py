@@ -4,6 +4,8 @@ from drawHex import*
 from Board import *
 from TileResource import*
 
+import math
+
 pygame.init()
 
 width = 1280
@@ -14,6 +16,8 @@ window_surface = pygame.display.set_mode((width, height))
 
 background = pygame.Surface((width, height))
 background.fill(pygame.Color('#9cd3db'))
+
+boardrect = pygame.Rect(100,100,800,600)
 
 # manager = pygame_gui.UIManager((width, height))
 
@@ -53,14 +57,20 @@ def textureToVal(value):
 clock = pygame.time.Clock()
 is_running = True
 
-font = pygame.font.SysFont(None, 20)
-
 
 
 for coord in testboard:
         if testboard.get(coord) != None:
-         background.blit(textureToVal(testboard[coord].resource), hexToPixel(75,coord[1],coord[0]))
-         print(coord)
+         background.blit(textureToVal(testboard[coord].resource), hexToPixel(75,coord[1],coord[0], 50))
+        
+
+for coord in testgrid:
+    print(coord[2])
+    if coord[2] == 'N':
+        pygame.draw.circle(background,'#000000',vertToPixel(75,coord[1],coord[0],110, 55),10)
+    if coord[2] == 'S':
+        pygame.draw.circle(background,'#FFFFFF',vertToPixel(75,coord[1],coord[0],110,195),10)
+        
 
 
 while is_running:
