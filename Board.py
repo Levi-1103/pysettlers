@@ -101,11 +101,13 @@ def createVertexGrid():
 
 def createEdges():
     grid = {}
-    for q in range(5):
-        for r in range(5):
+    for q in range(-2,6):
+        for r in range(-2,6):
             grid.update({Edge(q,r,'NW') : Road()})
             grid.update({Edge(q,r,'NE') : Road()})
             grid.update({Edge(q,r,'W') : Road()})
     return grid
 
-testgrid  = createVertexGrid()
+testvert  = createVertexGrid()
+
+testRoad = createEdges()

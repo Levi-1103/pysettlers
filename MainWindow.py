@@ -38,6 +38,8 @@ lumber = pygame.image.load("assets\Lumber.png").convert_alpha()
 ore = pygame.image.load("assets\Ore.png").convert_alpha()
 wool = pygame.image.load("assets\Wool.png").convert_alpha()
 
+testHex = pygame.image.load("assets\Hex.png").convert_alpha()
+
 def textureToVal(value):
     match value:
         case TileResource.Brick:
@@ -62,14 +64,30 @@ is_running = True
 for coord in testboard:
         if testboard.get(coord) != None:
          background.blit(textureToVal(testboard[coord].resource), hexToPixel(75,coord[1],coord[0], 50))
+
+# for coord in testboard:
+#         if testboard.get(coord) != None:
+#          background.blit(testHex, hexToPixel(75,coord[1],coord[0], 50))
+
+# for coord in testboard:
+#     background.blit(testHex, hexToPixel(75,coord[1],coord[0], 50))
         
 
-for coord in testgrid:
+for coord in testvert:
     print(coord[2])
     if coord[2] == 'N':
-        pygame.draw.circle(background,'#000000',vertToPixel(75,coord[1],coord[0],110, 55),10)
+        pygame.draw.circle(background,'#FF0000',vertToPixel(75,coord[1],coord[0],110, 45),15,1)
     if coord[2] == 'S':
-        pygame.draw.circle(background,'#FFFFFF',vertToPixel(75,coord[1],coord[0],110,195),10)
+        pygame.draw.circle(background,'#FFFFFF',vertToPixel(75,coord[1],coord[0],110,190),15,1)
+
+for coord in testRoad:
+    print(coord[2])
+    if coord[2] == 'W':
+        pygame.draw.circle(background,'#FF0000',vertToPixel(75,coord[1],coord[0],-15, 0),10)
+    if coord[2] == 'NW':
+        pygame.draw.circle(background,'#FFFFFF',vertToPixel(75,coord[1],coord[0],20,-50),10)
+    if coord[2] == 'NE':
+        pygame.draw.circle(background,'#000000',vertToPixel(75,coord[1],coord[0],70,-50),10)
         
 
 
