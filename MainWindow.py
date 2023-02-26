@@ -3,23 +3,32 @@ import pygame_gui
 from drawHex import*
 from Board import *
 from TileResource import*
-
 import math
 
 pygame.init()
 
-width = 1280
-height = 720
-
+screen_width = 1280
+screen_height = 720
+screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('The Settlers')
-window_surface = pygame.display.set_mode((width, height))
+window_surface = pygame.display.set_mode((screen_width, screen_height))
 
-background = pygame.Surface((width, height))
+background = pygame.Surface((screen_width, screen_height))
 background.fill(pygame.Color('#9cd3db'))
-
+font = pygame.font.Font(None, 36)
 boardrect = pygame.Rect(100,100,800,600)
 
-# manager = pygame_gui.UIManager((width, height))
+#Quit button creation
+quit_button_screen_width = 100
+quit_button_screen_height = 50
+quit_button_rect = pygame.Rect(
+    screen_width - quit_button_screen_width - 10,
+    screen_height - quit_button_screen_height - 10,
+    quit_button_screen_width,
+    quit_button_screen_height,
+)
+quit_button_color = pygame.Color("red")
+# manager = pygame_gui.UIManager((screen_width, screen_height))
 
 # new_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((250, 480), (100, 50)), text='New Game', manager=manager)
 
@@ -96,8 +105,19 @@ while is_running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             is_running = False
+        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+            mouse_pos = pygame.mouse.get_pos()
+            if quit_button_rect.collidepoint(mouse_pos):
+                is_running = False
 
-    
+        # Draw the Quit button
+    pygame.draw.rect(screen, quit_button_color, quit_button_rect)
+    quit_text = font.render("Quit", True, pygame.Color("white"))
+    quit_text_rect = quit_text.get_rect(center=quit_button_rect.center)
+    screen.blit(quit_text, quit_text_rect)
+
+    # Update the display
+    pygame.display.update()
     
     # manager.update(time_delta)
 
