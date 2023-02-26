@@ -1,4 +1,5 @@
 import pygame
+import MainWindow
 pygame.init()
 
 #set up screen
@@ -15,10 +16,10 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 SELECTED_ITEM_COLOR = pygame.Color('red')
 REGULAR_ITEM_COLOR = pygame.Color('white')
-font = pygame.font.SysFont(None, 48)
+font = pygame.font.Font("assets\Courier New Regular.ttf", 48)
 ITEM_HEIGHT = font.get_linesize()
 
-menu_items = ['New game', 'Options', 'Quit']
+menu_items = ['Start Game', 'Options', 'Quit']
 menu_top_margin = 200
 
 for i, item in enumerate(menu_items):
@@ -49,6 +50,7 @@ while running:
                 if menu_items[selected_item] == 'Start Game':
                     # Start the game
                     print('Starting game...')
+                    MainWindow.start_game()
                 elif menu_items[selected_item] == 'Options':
                     # Show the options menu
                     print('Showing options menu...')
@@ -75,4 +77,3 @@ while running:
     pygame.display.update()
     clock.tick(FPS)
 pygame.quit()
-
