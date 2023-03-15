@@ -1,8 +1,12 @@
 import pygame
+import sys
 import newMain
+from newMain import run_game
+
 
 # Initialize Pygame
 pygame.init()
+
 
 # Define constants
 SCREEN_WIDTH = 900
@@ -12,29 +16,44 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 SELECTED_ITEM_COLOR = pygame.Color('red')
 REGULAR_ITEM_COLOR = pygame.Color('white')
-font = font = pygame.font.Font("assets\Courier New Regular.ttf", 48)
+
+
+# Font
+FONT_SIZE = 48
+font_path = "assets/Courier New Regular.ttf"
+try:
+    font = pygame.font.Font(font_path, FONT_SIZE)
+except OSError:
+    print(f"Error loading font file '{font_path}'")
+    sys.exit()
+
+
 clock = pygame.time.Clock()
 ITEM_HEIGHT = font.get_linesize()
 MENU_ITEMS = ['Start Game', 'Options', 'Quit']
+
 
 # Create the game screen and set the caption
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Pysettlers v1.0")
 
+
 def draw_menu_items(selected_item):
     """Draws the menu items on the screen"""
-    screen.fill(BLACK)
-    y = (SCREEN_HEIGHT - len(MENU_ITEMS) * ITEM_HEIGHT) // 2
-    for i, item in enumerate(MENU_ITEMS):
-        if i == selected_item:
-            text_color = SELECTED_ITEM_COLOR
-        else:
-            text_color = REGULAR_ITEM_COLOR
-        text_surface = font.render(item, True, text_color)
-        text_rect = text_surface.get_rect()
-        text_rect.center = (SCREEN_WIDTH // 2, y)
-        screen.blit(text_surface, text_rect)
-        y += ITEM_HEIGHT
+    if pygame.display.get_surface() is not None:
+        screen.fill(BLACK)
+        y = (SCREEN_HEIGHT - len(MENU_ITEMS) * ITEM_HEIGHT) // 2
+        for i, item in enumerate(MENU_ITEMS):
+            if i == selected_item:
+                text_color = SELECTED_ITEM_COLOR
+            else:
+                text_color = REGULAR_ITEM_COLOR
+            text_surface = font.render(item, True, text_color)
+            text_rect = text_surface.get_rect()
+            text_rect.center = (SCREEN_WIDTH // 2, y)
+            screen.blit(text_surface, text_rect)
+            y += ITEM_HEIGHT
+
 
 def handle_events(selected_item):
     """Handles Pygame events, updating the selected menu item"""
@@ -63,19 +82,21 @@ def handle_events(selected_item):
                     return False, selected_item
     return True, selected_item
 
+
 def run_menu():
     """Runs the menu loop"""
     selected_item = 0
     is_running = True
     while is_running:
-        is_running, selected_item = handle_events(selected_item)
-        draw_menu_items(selected_item)
-        pygame.display.update()
+        if pygame.display.get_surface() is not None:
+            is_running, selected_item = handle_events(selected_item)
+            draw_menu_items(selected_item)
+        if pygame.display.get_surface() is not None:
+            pygame.display.update()
         clock.tick(FPS)
-        if is_running == False:
-            pygame.quit()
+    pygame.quit()          
+    sys.exit()
 
-    pygame.quit()
 
 # Run the menu
 if __name__ == "__main__":

@@ -1,13 +1,14 @@
 import pygame
-import pygame_gui
+import sys
 from drawHex import*
 from Board import *
 from TileResource import*
-import math
+
 
 #Initialise Pygame
 def init_game():
     pygame.init()
+
 
 #Screen size and other aesthetics
 def setup_screen():
@@ -20,12 +21,14 @@ def setup_screen():
     boardrect = pygame.Rect(100,100,800,600)
     return screen, window_surface, background, boardrect
 
+
 #Quit button configuration
 def setup_quit_button(screen_width, screen_height):
     quit_button_rect = pygame.Rect(screen_width - 110, screen_height - 60, 100, 50)
     quit_button_color = pygame.Color("red")
     font = pygame.font.Font(None, 36)
     return quit_button_rect, quit_button_color, font
+
 
 #Texture configuration
 def load_textures():
@@ -37,6 +40,7 @@ def load_textures():
     wool = pygame.image.load("assets\Wool.png").convert_alpha()
     testHex = pygame.image.load("assets\Hex.png").convert_alpha()
     return desert, brick, grain, lumber, ore, wool, testHex
+
 
 #Function to match texture to value
 def textureToVal(value):
@@ -53,6 +57,7 @@ def textureToVal(value):
     elif value == TileResource.Wool:
         return wool
 
+
 #Draw vertices function
 def drawVertices():
     for coord in testvert:
@@ -60,6 +65,7 @@ def drawVertices():
             pygame.draw.circle(background,'#FF0000',vertToPixel(75,coord[1],coord[0],110, 45),15,1)
         elif coord[2] == 'S':
             pygame.draw.circle(background,'#FFFFFF',vertToPixel(75,coord[1],coord[0],110,190),15,1)
+
 
 #Draw roads function
 def drawRoads():
@@ -71,37 +77,43 @@ def drawRoads():
         else:
             pygame.draw.circle(background,'#000000',vertToPixel(75,coord[1],coord[0],70,-50),10)
 
+
 #Draw hex function
 def drawHexes():
     for coord in testboard:
         if testboard.get(coord) != None:
             background.blit(textureToVal(testboard[coord].resource), hexToPixel(75,coord[1],coord[0], 50))
 
+
 #Main game loop
 def run_game():
     clock = pygame.time.Clock()
     is_running = True
-    
     while is_running:
         time_delta = clock.tick(60)/1000.0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_running = False
+                pygame.quit()
+                sys.exit()
             elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 mouse_pos = pygame.mouse.get_pos()
                 if quit_button_rect.collidepoint(mouse_pos):
                     is_running = False
                     pygame.quit()
+                    sys.exit()
+
 
         if pygame.display.get_active():
             window_surface.blit(background, (0, 0))
-            #screen.blit(background, (0, 0))
+
 
             #Draw the Quit button
             pygame.draw.rect(screen, quit_button_color, quit_button_rect)
             quit_text = font.render("Quit", True, pygame.Color("white"))
             quit_text_rect = quit_text.get_rect(center=quit_button_rect.center)
             screen.blit(quit_text, quit_text_rect)
+
 
             #Update the display
             drawHexes()
@@ -110,8 +122,11 @@ def run_game():
             pygame.display.update()
             #clock.tick(time_delta)
     pygame.quit()
+    sys.exit()
+
 
 init_game()
+
 
 #Screen
 screen, window_surface, background, boardrect = setup_screen()
