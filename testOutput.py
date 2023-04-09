@@ -77,9 +77,7 @@ skip = [
     Hex(6,6),
     Hex(5,6),
     Hex(4,6)
-
-
-        ]
+]
 
 for coord in board.tiles:
     if coord not in skip:
