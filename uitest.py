@@ -1,5 +1,5 @@
 import pygame
-from Board2 import Grid, Hex
+from Board import Grid, Hex
 from Player import *
 from TileResource import TileResource
 from drawHex import hexToPixel

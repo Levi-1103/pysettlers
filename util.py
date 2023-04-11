@@ -1,0 +1,14 @@
+def textureToVal(value):
+    match value:
+        case TileResource.Brick:
+            return brick
+        case TileResource.Desert:
+            return desert
+        case TileResource.Grain:
+            return grain
+        case TileResource.Lumber:
+            return lumber
+        case TileResource.Ore:
+            return ore
+        case TileResource.Wool:
+            return wool

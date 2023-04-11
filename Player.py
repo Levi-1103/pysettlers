@@ -2,7 +2,7 @@ class Player:
     def __init__(self,name,color):
         self.name = name
         self.color = color
-        self.resources = {"wood": 0, "brick": 0, "sheep": 0, "wheat": 0, "ore": 0}
+        self.resources = {"lumber": 1, "brick": 1, "wool": 1, "wheat": 1, "ore": 1}
         self.development_cards = []
         self.roads = []
         self.settlements = []

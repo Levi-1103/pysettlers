@@ -12,7 +12,4 @@ def vertToPixel(size, q, r, xoffset,yoffset):
     return (x + xoffset , y + yoffset)
 
 
-print(hexToPixel(10,1,1,0))
-print(vertToPixel(10,1,1,-10,10))
-
 #fix coord calculations so vertices and hexes align correctly

@@ -1,7 +1,7 @@
 import pygame
 import pygame_gui
 from drawHex import*
-from Board2 import *
+from Board import *
 from TileResource import*
 import math
 
@@ -93,11 +93,18 @@ for key in touches(Vertex(3,3,'N')):
 
 # background.blit(brick, hexToPixel(75,0,2, 50))
 
-# for coord in board.vertices:
-#     if coord.s == 'N':
-#         pygame.draw.circle(background,'#FF0000',vertToPixel(75,coord.q,coord.r,110, 45),15,1)
-#     if coord.s == 'S':
-#         pygame.draw.circle(background,'#FFFFFF',vertToPixel(75,coord.q,coord.r,110,190),15,1)
+for coord in board.tiles.keys():
+    if board.tiles[coord] != 'Water':
+        for key in corners(coord):
+            if key.s == 'N':
+                pygame.draw.circle(background,'#FF0000',vertToPixel(75,key.q,key.r,110,45),15)
+            if key.s == 'S':
+                pygame.draw.circle(background,'#FFFFFF',vertToPixel(75,key.q,key.r,110,190),15)
+
+    # if coord.s == 'N':
+    #     pygame.draw.circle(background,'#FF0000',vertToPixel(75,coord.q,coord.r,110, 45),15,1)
+    # if coord.s == 'S':
+    #     pygame.draw.circle(background,'#FFFFFF',vertToPixel(75,coord.q,coord.r,110,190),15,1)
 
 # for coord in board.edges:
 #     if coord.s == 'W':
@@ -118,11 +125,7 @@ while is_running:
     
     
     
-    for key in corners(Hex(3,3)):
-        if key.s == 'N':
-            pygame.draw.circle(background,'#FF0000',vertToPixel(75,key.q,key.r,110,45),15)
-        if key.s == 'S':
-            pygame.draw.circle(background,'#FFFFFF',vertToPixel(75,key.q,key.r,110,190),15)
+    
 
     
 
