@@ -1,12 +1,13 @@
 from collections import namedtuple
 from Tile import *
 
-Hex  =  namedtuple("Hex","q r")
+Hex = namedtuple("Hex", "q r")
 Vertex = namedtuple("Vertex", "q r s")
-Edge  = namedtuple("Edge", "q r s")
+Edge = namedtuple("Edge", "q r s")
+
 
 class Grid:
-    def __init__(self,size):
+    def __init__(self, size):
         self.tiles = {}
         self.edges = {}
         self.vertices = {}
@@ -14,46 +15,44 @@ class Grid:
 
         for q in range(size):
             for r in range(size):
-                self.tiles.update({Hex(q,r) : 'Water'})
-                self.edges.update({Edge(q,r, 'NE'): ''})
-                self.edges.update({Edge(q,r, 'NW'): ''})
-                self.edges.update({Edge(q,r, 'W'): ''})
-                self.vertices.update({Vertex(q,r, 'N'): ''})
-                self.vertices.update({Vertex(q,r, 'S'): ''})
-        
-    #Caveman solution       
-    def defaultBoard(self):
-        #1st Row
-        self.tiles.update({Hex(3,1) : Tile(TileResource.Ore,10)})
-        self.tiles.update({Hex(4,1) : Tile(TileResource.Wool,2)})
-        self.tiles.update({Hex(5,1) : Tile(TileResource.Lumber,9)})
-        #2nd Row
-        self.tiles.update({Hex(2,2) : Tile(TileResource.Grain,12)})
-        self.tiles.update({Hex(3,2) : Tile(TileResource.Brick,6)})
-        self.tiles.update({Hex(4,2) : Tile(TileResource.Wool,4)})
-        self.tiles.update({Hex(5,2) : Tile(TileResource.Brick,10)})
+                self.tiles.update({Hex(q, r): 'Water'})
+                self.edges.update({Edge(q, r, 'NE'): ''})
+                self.edges.update({Edge(q, r, 'NW'): ''})
+                self.edges.update({Edge(q, r, 'W'): ''})
+                self.vertices.update({Vertex(q, r, 'N'): ''})
+                self.vertices.update({Vertex(q, r, 'S'): ''})
 
-        #3rd Row
-        self.tiles.update({Hex(1,3) : Tile(TileResource.Grain,9)})
-        self.tiles.update({Hex(2,3) : Tile(TileResource.Lumber,11)})
-        self.tiles.update({Hex(3,3) : Tile(TileResource.Desert,7)})
-        self.tiles.update({Hex(4,3) : Tile(TileResource.Lumber,3)})
-        self.tiles.update({Hex(5,3) : Tile(TileResource.Ore,8)})
-        #4th Row
-        self.tiles.update({Hex(1,4) : Tile(TileResource.Lumber,8)})
-        self.tiles.update({Hex(2,4) : Tile(TileResource.Ore,3)})
-        self.tiles.update({Hex(3,4) : Tile(TileResource.Grain,4)})
-        self.tiles.update({Hex(4,4) : Tile(TileResource.Wool,5)})
-        #5th Row
-        self.tiles.update({Hex(1,5) : Tile(TileResource.Brick,5)})
-        self.tiles.update({Hex(2,5) : Tile(TileResource.Grain,6)})
-        self.tiles.update({Hex(3,5) : Tile(TileResource.Wool,11)})
+    # Caveman solution
+    def defaultBoard(self):
+        # 1st Row
+        self.tiles.update({Hex(3, 1): Tile(TileResource.Ore, 10)})
+        self.tiles.update({Hex(4, 1): Tile(TileResource.Wool, 2)})
+        self.tiles.update({Hex(5, 1): Tile(TileResource.Lumber, 9)})
+        # 2nd Row
+        self.tiles.update({Hex(2, 2): Tile(TileResource.Grain, 12)})
+        self.tiles.update({Hex(3, 2): Tile(TileResource.Brick, 6)})
+        self.tiles.update({Hex(4, 2): Tile(TileResource.Wool, 4)})
+        self.tiles.update({Hex(5, 2): Tile(TileResource.Brick, 10)})
+
+        # 3rd Row
+        self.tiles.update({Hex(1, 3): Tile(TileResource.Grain, 9)})
+        self.tiles.update({Hex(2, 3): Tile(TileResource.Lumber, 11)})
+        self.tiles.update({Hex(3, 3): Tile(TileResource.Desert, 7)})
+        self.tiles.update({Hex(4, 3): Tile(TileResource.Lumber, 3)})
+        self.tiles.update({Hex(5, 3): Tile(TileResource.Ore, 8)})
+        # 4th Row
+        self.tiles.update({Hex(1, 4): Tile(TileResource.Lumber, 8)})
+        self.tiles.update({Hex(2, 4): Tile(TileResource.Ore, 3)})
+        self.tiles.update({Hex(3, 4): Tile(TileResource.Grain, 4)})
+        self.tiles.update({Hex(4, 4): Tile(TileResource.Wool, 5)})
+        # 5th Row
+        self.tiles.update({Hex(1, 5): Tile(TileResource.Brick, 5)})
+        self.tiles.update({Hex(2, 5): Tile(TileResource.Grain, 6)})
+        self.tiles.update({Hex(3, 5): Tile(TileResource.Wool, 11)})
 
         # code to delete empty tiles
 
-    
 
-    
 def neighbours(tile):
     q = tile.q
     r = tile.r
@@ -66,9 +65,10 @@ def neighbours(tile):
         Hex(q - 1, r + 1)
     ]
 
+
 def borders(tile):
     q = tile.q
-    r = tile.r 
+    r = tile.r
     return [
         Edge(q, r, 'NE'),
         Edge(q, r, 'NW'),
@@ -77,6 +77,7 @@ def borders(tile):
         Edge(q, r+1, 'NW'),
         Edge(q+1, r, 'W')
     ]
+
 
 def corners(tile):
     q = tile.q
@@ -91,18 +92,19 @@ def corners(tile):
         Vertex(q+1, r-1, 'S')
     ]
 
+
 def joins(edge):
-    (q,r,s) = edge
+    (q, r, s) = edge
 
     if s == 'NE':
         return [
-            Hex(q + 1, r -1),
-            Hex(q , r)
+            Hex(q + 1, r - 1),
+            Hex(q, r)
         ]
     elif s == 'NW':
         return [
-            Hex(q , r),
-            Hex(q , r - 1)
+            Hex(q, r),
+            Hex(q, r - 1)
         ]
     elif s == 'W':
         return [
@@ -110,17 +112,18 @@ def joins(edge):
             Hex(q - 1, r)
         ]
 
+
 def endpoints(edge):
-    (q,r,s) = edge
+    (q, r, s) = edge
     if s == 'NE':
         return [
-            Vertex(q + 1, r -1, 'S'),
-            Vertex(q , r, 'N')
+            Vertex(q + 1, r - 1, 'S'),
+            Vertex(q, r, 'N')
         ]
     elif s == 'NW':
         return [
-            Vertex(q , r, 'N'),
-            Vertex(q , r - 1, 'S')
+            Vertex(q, r, 'N'),
+            Vertex(q, r - 1, 'S')
         ]
     elif s == 'W':
         return [
@@ -128,12 +131,12 @@ def endpoints(edge):
             Hex(q - 1, r + 1, 'N')
         ]
 
-    
+
 def touches(vertex):
     q = vertex.q
     r = vertex.r
     s = vertex.s
-    
+
     if s == 'N':
         return [
             Hex(q + 1, r - 1),
@@ -147,9 +150,9 @@ def touches(vertex):
             Hex(q - 1, r + 1)
         ]
 
-    
+
 def protrudes(vertex):
-    (q,r,s) = vertex
+    (q, r, s) = vertex
     if s == 'N':
         return [
             Edge(q, r, 'NE'),
@@ -162,9 +165,10 @@ def protrudes(vertex):
             Edge(q-1, r+1, 'NE'),
             Edge(q, r+1, 'W')
         ]
-    
+
+
 def adjacent(vertex):
-    (q,r,s) = vertex
+    (q, r, s) = vertex
     if s == 'N':
         return [
             Vertex(q+1, r-2, 'S'),
@@ -182,7 +186,3 @@ def adjacent(vertex):
 # def printNeigbourValues(tile):
 #     for key in neighbours(tile):
 #         print(game.tiles.get(key))
-
-
-
-
