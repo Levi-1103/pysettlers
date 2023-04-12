@@ -157,7 +157,7 @@ y = 0
 yoffset = 50
 
 print(current_player.name)
-player_name = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y,150,150),text="str(current_player.name)",manager=manager)
+player_name = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y,150,150),text=str(current_player.name),manager=manager)
 resources = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset - 25  ,150,150),text="Resources",manager=manager)
 
 brick = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset,150,150),text="Brick: " + str(current_player.resources.get('brick')),manager=manager)
