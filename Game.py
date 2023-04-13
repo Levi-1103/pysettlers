@@ -23,8 +23,6 @@ class Game:
         self.current_turn = 0
         self.winner = None
         
-        
-
     def start_game(self):
 
         self.current_turn = 1
@@ -44,10 +42,12 @@ class Game:
         dice1 = random.randint(1,6)
         dice2 = random.randint(1,6)
         roll = dice1 + dice2
-        print(roll)
+        print("Roll this turn", roll)
         #self.current_player.settlements for player settlements
         #check roll nums to settlements roll nums
         #if rollnums match assign resource to player
+
+        
         for vert in self.board.vertices.keys():
             if self.board.vertices[vert] != '':
                 print(touches(vert))
@@ -73,9 +73,11 @@ def print_board(newgame):
 
 newgame.place_settlement(Vertex(q=5, r=2, s='S'),newgame.current_player)
 
-print_board(newgame)
+#print_board(newgame)
 
 newgame.roll_dice()
+
+
 
 
         

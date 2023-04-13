@@ -4,7 +4,7 @@ from pygame_gui.elements.ui_window import UIWindow
 from Board import *
 
 from TileResource import TileResource
-from drawHex import hexToPixel
+from drawHex import hexToPixel, vertToPixel
 
 
 pygame.init()
@@ -111,13 +111,16 @@ right_rect.fill((255, 255, 255))
 board_tiles_rect = pygame.Surface((left_rect_width, left_rect_height), pygame.SRCALPHA)
 board_tiles_rect.fill((255,255,255,0))
 
+board_offset = 50
+
 for coord in board.tiles:
     if coord not in skip:
         pass
     if board.tiles[coord] != 'Water':
-       board_tiles_rect.blit(textureToVal(board.tiles[coord].resource),hexToPixel(75,coord.q,coord.r, 50))
+       board_tiles_rect.blit(textureToVal(board.tiles[coord].resource),hexToPixel(75,coord.q,coord.r, 0))
     elif coord not in skip and board.tiles[coord] == 'Water':
-        board_tiles_rect.blit(water, hexToPixel(75,coord.q,coord.r, 50))
+        board_tiles_rect.blit(water, hexToPixel(75,coord.q,coord.r, 0))
+
 
 
 end_turn_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 100), (100, 50)),
@@ -128,12 +131,26 @@ roll_dice_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREE
                                             text='Roll Dice',
                                             manager=manager)
 
-trade_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3, 200), (100, 50)),
+trade_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 200), (100, 50)),
                                             text='Trade',
                                             manager=manager)
 
 
+verts_rect = pygame.Surface((left_rect_width, left_rect_height), pygame.SRCALPHA)
+verts_rect.fill((255,255,255,0))
 
+def print_verts(surface):
+    x = 60
+    y = 0
+    for coord in board.tiles.keys():
+        if board.tiles[coord] != "Water":
+            for key in corners(coord):
+                if board.vertices[key] == '':
+                    if key.s == 'N':
+                       pygame.draw.circle(surface,'#FF0000',vertToPixel(75,key.q,key.r,x,y),10)
+                    if key.s =='S':
+                        pygame.draw.circle(surface,'#FFFFFF',vertToPixel(75,key.q,key.r,x,y + 75 * 2),10)
+                        
 
 
 class TradeWindow(UIWindow):
@@ -160,11 +177,11 @@ print(current_player.name)
 player_name = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y,150,150),text=str(current_player.name),manager=manager)
 resources = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset - 25  ,150,150),text="Resources",manager=manager)
 
-brick = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset,150,150),text="Brick: " + str(current_player.resources.get('brick')),manager=manager)
-lumber = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 2,150,150),text="Lumber: " + str(current_player.resources.get('lumber')),manager=manager)
-ore = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 3,150,150),text="Ore: " + str(current_player.resources.get('ore')),manager=manager)
-grain = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 4,150,150),text="Grain: " + str(current_player.resources.get('wheat')),manager=manager)
-wool = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 5,150,150),text="Wool: " + str(current_player.resources.get('wool')),manager=manager)
+brick_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset,150,150),text="Brick: " + str(current_player.resources.get('brick')),manager=manager)
+lumber_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 2,150,150),text="Lumber: " + str(current_player.resources.get('lumber')),manager=manager)
+ore_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 3,150,150),text="Ore: " + str(current_player.resources.get('ore')),manager=manager)
+grain_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 4,150,150),text="Grain: " + str(current_player.resources.get('wheat')),manager=manager)
+wool_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 5,150,150),text="Wool: " + str(current_player.resources.get('wool')),manager=manager)
 
 
     
@@ -202,7 +219,9 @@ while is_running:
     background.blit(left_rect, (0, 0))
     
     background.blit(right_rect, (left_rect_width, 0))
-    left_rect.blit(board_tiles_rect,(-100,0))
+    left_rect.blit(board_tiles_rect,(-100,50))
+    print_verts(verts_rect)
+    left_rect.blit(verts_rect,(-100,50))
     
 
     manager.draw_ui(window_surface)
