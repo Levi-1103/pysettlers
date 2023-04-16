@@ -16,7 +16,7 @@ def tiles():
 
             if i == 0:
                 continue
-        tiles.append(TileResource.Nothing)
+        tiles.append(TileResource.Desert)
 
         return tiles
 
@@ -42,7 +42,7 @@ hexNum = tileNum()
 
 #add Empty tile to resource list
 restest = random.sample(hexRes[:18],18)
-restest.append(TileResource.Nothing)
+restest.append(TileResource.Desert)
 
 #function for merging lists
 def merge(list1, list2):

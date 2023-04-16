@@ -181,14 +181,15 @@ y = 0
 yoffset = 50
 
 print(current_player.name)
+
 player_name = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y,150,150),text=str(current_player.name),manager=manager)
 resources = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset - 25  ,150,150),text="Resources",manager=manager)
 
-brick_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset,150,150),text="Brick: " + str(current_player.resources.get('brick')),manager=manager)
-lumber_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 2,150,150),text="Lumber: " + str(current_player.resources.get('lumber')),manager=manager)
-ore_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 3,150,150),text="Ore: " + str(current_player.resources.get('ore')),manager=manager)
-grain_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 4,150,150),text="Grain: " + str(current_player.resources.get('wheat')),manager=manager)
-wool_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 5,150,150),text="Wool: " + str(current_player.resources.get('wool')),manager=manager)
+brick_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset,150,150),text="Brick: " + str(current_player.resources.get(TileResource.Brick)),manager=manager)
+lumber_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 2,150,150),text="Lumber: " + str(current_player.resources.get(TileResource.Lumber)),manager=manager)
+ore_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 3,150,150),text="Ore: " + str(current_player.resources.get(TileResource.Ore)),manager=manager)
+grain_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 4,150,150),text="Grain: " + str(current_player.resources.get(TileResource.Grain)),manager=manager)
+wool_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 5,150,150),text="Wool: " + str(current_player.resources.get(TileResource.Wool)),manager=manager)
 
   
 
