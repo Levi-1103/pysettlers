@@ -9,7 +9,6 @@ from drawHex import hexToPixel, vertToPixel
 
 pygame.init()
 
-
 SCREEN_WIDTH = 1600
 SCREEN_HEIGHT = 900
 
@@ -17,8 +16,6 @@ pygame.display.set_caption('Settlers')
 window_surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 background = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
-background.fill(pygame.Color('#000000'))
-
 manager = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT),'theme.json')
 
 font = pygame.font.Font(None, 80)
@@ -79,7 +76,6 @@ board = Grid(7)
 
 board.defaultBoard()
 
-
 #test player 
 
 
@@ -139,18 +135,29 @@ trade_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WI
 verts_rect = pygame.Surface((left_rect_width, left_rect_height), pygame.SRCALPHA)
 verts_rect.fill((255,255,255,0))
 
-def print_verts(surface):
+def print_verts(surface,list):
     x = 60
     y = 0
-    for coord in board.tiles.keys():
+    for key in list:
+        if key.s == 'N':
+            pygame.draw.circle(surface,'#FF0000',vertToPixel(75,key.q,key.r,x,y),10)
+
+        if key.s =='S':
+            pygame.draw.circle(surface,'#FFFFFF',vertToPixel(75,key.q,key.r,x,y + 75 * 2),10)
+
+
+
+
+empty_verts = []
+
+for coord in board.tiles.keys():
         if board.tiles[coord] != "Water":
             for key in corners(coord):
                 if board.vertices[key] == '':
-                    if key.s == 'N':
-                       pygame.draw.circle(surface,'#FF0000',vertToPixel(75,key.q,key.r,x,y),10)
-                    if key.s =='S':
-                        pygame.draw.circle(surface,'#FFFFFF',vertToPixel(75,key.q,key.r,x,y + 75 * 2),10)
-                        
+                    if key in empty_verts:
+                        pass
+                    else:
+                        empty_verts.append(key)
 
 
 class TradeWindow(UIWindow):
@@ -183,12 +190,13 @@ ore_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset 
 grain_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 4,150,150),text="Grain: " + str(current_player.resources.get('wheat')),manager=manager)
 wool_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 5,150,150),text="Wool: " + str(current_player.resources.get('wool')),manager=manager)
 
+  
 
-    
 
 clock = pygame.time.Clock()
 is_running = True
 while is_running:
+    window_surface.fill((0,0,0))
     time_delta = clock.tick(60)/1000.0
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -203,7 +211,6 @@ while is_running:
                 current_player_index = (current_player_index + 1) % len(players)
                 current_player = players[current_player_index]
                 player_name.set_text(current_player.name)
-
                 print('End Turn')
                 
         
@@ -220,11 +227,13 @@ while is_running:
     
     background.blit(right_rect, (left_rect_width, 0))
     left_rect.blit(board_tiles_rect,(-100,50))
-    print_verts(verts_rect)
+    print_verts(verts_rect,empty_verts)
     left_rect.blit(verts_rect,(-100,50))
-    
+
 
     manager.draw_ui(window_surface)
 
-
-    pygame.display.update()
+    
+    
+    pygame.display.flip()
+    
