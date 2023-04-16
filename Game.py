@@ -43,19 +43,35 @@ class Game:
         dice2 = random.randint(1,6)
         roll = dice1 + dice2
         print("Roll this turn", roll)
-        #self.current_player.settlements for player settlements
-        #check roll nums to settlements roll nums
-        #if rollnums match assign resource to player
 
+        rolled_tiles = []
         
         for vert in self.board.vertices.keys():
             if self.board.vertices[vert] != '':
-                print(touches(vert))
+                rolled_tiles = touches(vert)
+        
+        for tile in rolled_tiles:
+            if self.board.tiles[tile].rollNum == roll:
+                print(self.board.tiles[tile].resource)
+                self.current_player.add_resource(self.board.tiles[tile].resource, 1)
+        
     
     def place_settlement(self,vertex,player):
         if self.board.vertices[vertex] == '':
             self.board.vertices.update({vertex: Building(BuildingType.Settlement,player)})
             player.add_settlement(vertex)
+            player.add_victory_point()
+    
+    def place_road(self,edge,player):
+        pass
+
+    def print_players_data(self):
+        for player in self.players:
+            print("Player" ,player.name)
+            print(player.resources)
+            print("Victory Points", player.victory_points)
+
+
 
 
 newgame = Game(4)
@@ -77,6 +93,9 @@ newgame.place_settlement(Vertex(q=5, r=2, s='S'),newgame.current_player)
 
 newgame.roll_dice()
 
+print(newgame.current_player.resources)
+
+newgame.print_players_data()
 
 
 
