@@ -1,49 +1,53 @@
 import pygame
 from Board import Grid, Hex
-from Player import *
+from Player import Player
 from TileResource import TileResource
 from drawHex import hexToPixel
 
+# Initialise Pygame
 pygame.init()
 
 # Set up the Pygame screen
-screen_width = 1600
-screen_height = 900
-screen = pygame.display.set_mode((screen_width, screen_height))
+SCREEN_WIDTH = 1600
+SCREEN_HEIGHT = 900
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Split Screen Demo")
 
 # Set up the font
-font = pygame.font.SysFont(None, 36)
+FONT_SIZE = 20
+font = pygame.font.SysFont(None, FONT_SIZE)
 
-#import textures
-desert = pygame.image.load("assets\Desert.png").convert_alpha() #120x140
-brick = pygame.image.load("assets\Brick.png").convert_alpha()
-grain = pygame.image.load("assets\Grain.png").convert_alpha()
-lumber = pygame.image.load("assets\Lumber.png").convert_alpha()
-ore = pygame.image.load("assets\Ore.png").convert_alpha()
-wool = pygame.image.load("assets\Wool.png").convert_alpha()
-water = pygame.image.load("assets\Hex.png").convert_alpha()
+# Load textures
+TEXTURE_PATHS = {
+    TileResource.Brick: "assets/Brick.png",
+    TileResource.Desert: "assets/Desert.png",
+    TileResource.Grain: "assets/Grain.png",
+    TileResource.Lumber: "assets/Lumber.png",
+    TileResource.Ore: "assets/Ore.png",
+    TileResource.Wool: "assets/Wool.png",
+    "Water": "assets/Hex.png"
+}
+textures = {}
+for resource, path in TEXTURE_PATHS.items():
+    textures[resource] = pygame.image.load(path).convert_alpha()
 
 def textureToVal(value):
     match value:
         case TileResource.Brick:
-            return brick
+            return textures[TileResource.Brick]
         case TileResource.Desert:
-            return desert
+            return textures[TileResource.Desert]
         case TileResource.Grain:
-            return grain
+            return textures[TileResource.Grain]
         case TileResource.Lumber:
-            return lumber
+            return textures[TileResource.Lumber]
         case TileResource.Ore:
-            return ore
+            return textures[TileResource.Ore]
         case TileResource.Wool:
-            return wool
+            return textures[TileResource.Wool]
         
 board = Grid(7)
-
 board.defaultBoard()
-
-
 skip = [
     Hex(0,0),
     Hex(0,1),
@@ -51,7 +55,6 @@ skip = [
     Hex(1,0),
     Hex(1,1),
     Hex(0,2),
-
     Hex(6,4),
     Hex(6,5),
     Hex(5,5),
@@ -60,73 +63,70 @@ skip = [
     Hex(4,6)
 ]
 
-
+# Set up players
+player1 = Player("Levi","RED")
+player2 = Player("Luke", "BLUE")
+players = [player1, player2]
+current_player = 0
 
 # Set up the left rectangle
-left_rect_width = screen_width // 4 * 3
-left_rect_height = screen_height
-left_rect = pygame.Surface((left_rect_width, left_rect_height))
+LEFT_RECT_WIDTH = SCREEN_WIDTH // 4 * 3
+LEFT_RECT_HEIGHT = SCREEN_HEIGHT
+left_rect = pygame.Surface((LEFT_RECT_WIDTH, LEFT_RECT_HEIGHT))
 left_rect.fill((150, 150, 255))
-#left_text = font.render("Left Rectangle", True, (0, 0, 0))
-#left_rect.blit(left_text, (left_rect_width // 2 - left_text.get_width() // 2, left_rect_height // 2 - left_text.get_height() // 2))
 
 # Set up the right rectangle
-right_rect_width = screen_width // 4
-right_rect_height = screen_height
-right_rect = pygame.Surface((right_rect_width, right_rect_height))
+RIGHT_RECT_WIDTH = SCREEN_WIDTH // 4
+RIGHT_RECT_HEIGHT = SCREEN_HEIGHT
+right_rect = pygame.Surface((RIGHT_RECT_WIDTH, RIGHT_RECT_HEIGHT))
 right_rect.fill((255, 255, 255))
-#right_text = font.render("Right Rectangle", True, (0, 0, 0))
-resources = ["brick", "lumber", "ore", "grain", "wool"]
 
-board_tiles_rect = pygame.Surface((left_rect_width, left_rect_height), pygame.SRCALPHA)
+
+# Initialize variables
+resources = ["Brick", "Lumber", "Ore", "Grain", "Wool"]
+board_tiles_rect = pygame.Surface((LEFT_RECT_WIDTH, LEFT_RECT_HEIGHT), pygame.SRCALPHA)
 board_tiles_rect.fill((255,255,255,0))
 
-for coord in board.tiles:
-    if coord not in skip:
-        pass
-    if board.tiles[coord] != 'Water':
-       board_tiles_rect.blit(textureToVal(board.tiles[coord].resource),hexToPixel(75,coord.q,coord.r, 50))
-    elif coord not in skip and board.tiles[coord] == 'Water':
-        board_tiles_rect.blit(water, hexToPixel(75,coord.q,coord.r, 50))
+# Define functions
+def draw_board():
+    for coord in board.tiles:
+        if coord in skip:
+            continue
+        if board.tiles[coord] == "Water":
+            board_tiles_rect.blit(textures["Water"], hexToPixel(75,coord.q,coord.r, 50))
+        else:
+            texture = textures[board.tiles[coord].resource]
+            board_tiles_rect.blit(texture, hexToPixel(75,coord.q,coord.r, 50))
 
-p1 = Player("Levi","RED")
+def render_resources(screen, font, resources, name, x, y):
+    player_name = font.render(name, True, (0, 0, 0))
+    screen.blit(player_name, (x, y - 25))
 
-print(p1.resources.items())
-
-def printResources(name,resources):
-
-    x = screen_width - screen_width / 8 - 100  # Starting x position for the text
-    y = screen_height - 800  # Starting y position for the text
-    
-    player_name = font.render(name,True, (0, 0, 0))
-    screen.blit(player_name,(x, y - 50))
-
-    for key, value in resources.items():
-        key_str = str(key)  # convert the TileResource object to a string
+    for i, (key, value) in enumerate(resources.items()):
+        key_str = str(key)
         key_surface = font.render(key_str, True, (0, 0, 0))
-        screen.blit(key_surface, (x, y))
+        screen.blit(key_surface, (x, y + (i * (key_surface.get_height() + 10))))
         value_surface = font.render(str(value), True, (0, 0, 0))
-        screen.blit(value_surface, (x + 150, y))
-        y += key_surface.get_height() + 10  # Add some space between the text
-    
-#right_rect.blit(right_text, (right_rect_width // 2 - right_text.get_width() // 2, right_rect_height // 2 - right_text.get_height() // 2))
+        screen.blit(value_surface, (x + 150, y + (i * (key_surface.get_height() + 10))))
 
-# Main game loop
-while True:
-    # Handle events
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            quit()
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-            p1.add_resource('sheep', 2)
+def main():
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                player1.add_resource(TileResource.Sheep, 2)
+                player2.add_resource(TileResource.Brick, 2)
+        # Draw the screen
+        screen.blit(left_rect, (0, 0))
+        screen.blit(right_rect, (LEFT_RECT_WIDTH, 0))
+        draw_board()
+        left_rect.blit(board_tiles_rect, (-100, 0))
+        render_resources(screen, font, player1.resources, player1.name, SCREEN_WIDTH - SCREEN_WIDTH / 8 - 100, SCREEN_HEIGHT - 800)
+        render_resources(screen, font, player2.resources, player2.name, SCREEN_WIDTH - SCREEN_WIDTH / 8 - 100, SCREEN_HEIGHT - 600)
 
-    # Update game state
+        pygame.display.update()
 
-    # Draw the screen
-    screen.blit(left_rect, (0, 0))
-    screen.blit(right_rect, (left_rect_width, 0))
-    left_rect.blit(board_tiles_rect,(-100,0))
-    printResources(p1.name,p1.resources)
-
-    pygame.display.update()
+if __name__ == '__main__':
+    main()
