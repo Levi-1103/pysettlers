@@ -16,7 +16,6 @@ pygame.display.set_caption("Split Screen Demo")
 font = pygame.font.SysFont(None, 36)
 
 #import textures
-
 desert = pygame.image.load("assets\Desert.png").convert_alpha() #120x140
 brick = pygame.image.load("assets\Brick.png").convert_alpha()
 grain = pygame.image.load("assets\Grain.png").convert_alpha()
@@ -103,16 +102,13 @@ def printResources(name,resources):
     screen.blit(player_name,(x, y - 50))
 
     for key, value in resources.items():
-        key_surface = font.render(key, True, (0, 0, 0))
+        key_str = str(key)  # convert the TileResource object to a string
+        key_surface = font.render(key_str, True, (0, 0, 0))
         screen.blit(key_surface, (x, y))
         value_surface = font.render(str(value), True, (0, 0, 0))
         screen.blit(value_surface, (x + 150, y))
         y += key_surface.get_height() + 10  # Add some space between the text
     
-
-
-    
-
 #right_rect.blit(right_text, (right_rect_width // 2 - right_text.get_width() // 2, right_rect_height // 2 - right_text.get_height() // 2))
 
 # Main game loop
