@@ -1,22 +1,22 @@
 import pygame
 import sys
-import newMain
-from newMain import run_game
-
+import uitest
+from uitest import main
 
 # Initialize Pygame
 pygame.init()
 
 
 # Define constants
-SCREEN_WIDTH = 900
-SCREEN_HEIGHT = 650
+SCREEN_WIDTH = 1600
+SCREEN_HEIGHT = 900
 FPS = 60
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+BACKGROUND = "assets\catanMenu22.png"
+BACKGROUND = pygame.image.load(BACKGROUND)
 SELECTED_ITEM_COLOR = pygame.Color('red')
 REGULAR_ITEM_COLOR = pygame.Color('white')
-
 
 # Font
 FONT_SIZE = 48
@@ -24,7 +24,7 @@ font_path = "assets/Courier New Regular.ttf"
 try:
     font = pygame.font.Font(font_path, FONT_SIZE)
 except OSError:
-    print(f"Error loading font file '{font_path}'")
+    print("Error loading font file '{font_path}'")
     sys.exit()
 
 
@@ -41,7 +41,7 @@ pygame.display.set_caption("Pysettlers v1.0")
 def draw_menu_items(selected_item):
     """Draws the menu items on the screen"""
     if pygame.display.get_surface() is not None:
-        screen.fill(BLACK)
+        screen.blit(BACKGROUND, (0, 0))
         y = (SCREEN_HEIGHT - len(MENU_ITEMS) * ITEM_HEIGHT) // 2
         for i, item in enumerate(MENU_ITEMS):
             if i == selected_item:
@@ -73,7 +73,7 @@ def handle_events(selected_item):
                 if MENU_ITEMS[selected_item] == 'Start Game':
                     # Start the game
                     print('Starting game...')
-                    newMain.run_game()
+                    uitest.main()
                 elif MENU_ITEMS[selected_item] == 'Options':
                     # Show the options menu
                     print('Showing options menu...')
