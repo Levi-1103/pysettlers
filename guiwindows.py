@@ -173,6 +173,8 @@ class TradeWindow(UIWindow):
 
 trade_window = TradeWindow(manager)
 
+class VertButton:
+    pass
 
 
 
@@ -191,7 +193,6 @@ ore_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset 
 grain_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 4,150,150),text="Grain: " + str(current_player.resources.get(TileResource.Grain)),manager=manager)
 wool_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 5,150,150),text="Wool: " + str(current_player.resources.get(TileResource.Wool)),manager=manager)
 
-  
 
 
 clock = pygame.time.Clock()
@@ -235,6 +236,6 @@ while is_running:
     manager.draw_ui(window_surface)
 
     
-    
+        
     pygame.display.flip()
     

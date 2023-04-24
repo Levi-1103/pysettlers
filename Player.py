@@ -5,7 +5,6 @@ class Player:
     def __init__(self,name,color):
         self.name = name
         self.color = color
-        #self.resources = {"lumber": 1, "brick": 1, "wool": 1, "wheat": 1, "ore": 1}
         self.resources = {TileResource.Lumber: 1, TileResource.Brick: 1, TileResource.Wool: 1, TileResource.Grain: 1, TileResource.Ore: 1}
         self.development_cards = []
         self.roads = []

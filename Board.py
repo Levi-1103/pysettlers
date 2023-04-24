@@ -22,7 +22,7 @@ class Grid:
                 self.vertices.update({Vertex(q, r, 'N'): ''})
                 self.vertices.update({Vertex(q, r, 'S'): ''})
 
-    # Caveman solution
+   
     def defaultBoard(self):
         # 1st Row
         self.tiles.update({Hex(3, 1): Tile(TileResource.Ore, 10)})
