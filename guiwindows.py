@@ -77,7 +77,7 @@ skip = [
 
 board = Grid(7)
 
-board.defaultBoard()
+board.random_board()
 
 #test player 
 
@@ -173,11 +173,11 @@ def print_buttons(surface,list):
 
 
 build_road_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 300), (100, 50)),
-                                            text='Build Road',
+                                            text='Build Road', tool_tip_text="Press to Build a Road. It costs : 1 Brick + 1 Lumber",
                                             manager=manager)
 
 build_settlement_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3 + 100, SCREEN_HEIGHT - 300), (100, 50)),
-                                            text='Build Settlement',
+                                            text='Build Settlement', tool_tip_text="Press to Build a Settlement It costs: 1 Brick + 1 Lumber + 1 Grain + 1 Wool",
                                             manager=manager)
 
 upgrade_settlement_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3 + 200, SCREEN_HEIGHT - 300), (100, 50)),
@@ -186,16 +186,16 @@ upgrade_settlement_button = pygame_gui.elements.UIButton(relative_rect=pygame.Re
 
 
 trade_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 200), (100, 50)),
-                                            text='Trade',
+                                            text='Trade',tool_tip_text="Press To Bring Up Trade Menu",
                                             manager=manager)
 
 
 end_turn_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3 + 100, SCREEN_HEIGHT - 100), (100, 50)),
-                                            text='End Turn',
+                                            text='End Turn',tool_tip_text="Press To End Your Turn",
                                             manager=manager)
 
 roll_dice_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 100), (100, 50)),
-                                            text='Roll Dice',
+                                            text='Roll Dice', tool_tip_text="Roll Dice To Get Resources",
                                             manager=manager)
 
 
@@ -232,6 +232,7 @@ class TradeWindow(UIWindow):
         
     def on_close_window_button_pressed(self):
         self.hide()
+    
 
 trade_window = TradeWindow(manager)
 
@@ -302,11 +303,11 @@ while is_running:
     draw_board(skip, board, left_rect)
     print_verts(left_rect,empty_verts)
 
-    for button in buttons:
-        button.draw()
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if button.is_clicked(cursor) == True:
-                print("Clicked")
+    # for button in buttons:
+    #     button.draw()
+    #     if event.type == pygame.MOUSEBUTTONDOWN:
+    #         if button.is_clicked(cursor) == True:
+    #             print("Clicked")
     
     
 

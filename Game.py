@@ -3,13 +3,13 @@ from Player import *
 from Building import *
 import random
 class Game:
-    def __init__(self,playerNum = 3,board_type = 'default'):
+    def __init__(self,playerNum = 3,board_type = "random"):
         self.board = Grid(7)
         if(board_type == 'default'):
             self.board.defaultBoard()
         else:
-            #code for random board
-            pass
+            if(board_type =="random"):
+                self.board.random_board()
 
         self.resource_cards = {}
         self.development_cards = {}

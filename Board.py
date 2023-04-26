@@ -1,5 +1,6 @@
 from collections import namedtuple
 from Tile import *
+from Map import *
 
 Hex = namedtuple("Hex", "q r")
 Vertex = namedtuple("Vertex", "q r s")
@@ -51,6 +52,32 @@ class Grid:
         self.tiles.update({Hex(3, 5): Tile(TileResource.Wool, 11)})
 
         # code to delete empty tiles
+
+    def random_board(self):
+        self.tiles.update({Hex(3, 1): Tile(*shuffle[0])})
+        self.tiles.update({Hex(4, 1): Tile(*shuffle[1])})
+        self.tiles.update({Hex(5, 1): Tile(*shuffle[2])})
+        # 2nd Row
+        self.tiles.update({Hex(2, 2): Tile(*shuffle[3])})
+        self.tiles.update({Hex(3, 2): Tile(*shuffle[4])})
+        self.tiles.update({Hex(4, 2): Tile(*shuffle[5])})
+        self.tiles.update({Hex(5, 2): Tile(*shuffle[6])})
+
+        # 3rd Row
+        self.tiles.update({Hex(1, 3): Tile(*shuffle[7])})
+        self.tiles.update({Hex(2, 3): Tile(*shuffle[8])})
+        self.tiles.update({Hex(3, 3): Tile(*shuffle[9])})
+        self.tiles.update({Hex(4, 3): Tile(*shuffle[10])})
+        self.tiles.update({Hex(5, 3): Tile(*shuffle[11])})
+        # 4th Row
+        self.tiles.update({Hex(1, 4): Tile(*shuffle[12])})
+        self.tiles.update({Hex(2, 4): Tile(*shuffle[13])})
+        self.tiles.update({Hex(3, 4): Tile(*shuffle[14])})
+        self.tiles.update({Hex(4, 4): Tile(*shuffle[15])})
+        # 5th Row
+        self.tiles.update({Hex(1, 5): Tile(*shuffle[16])})
+        self.tiles.update({Hex(2, 5): Tile(*shuffle[17])})
+        self.tiles.update({Hex(3, 5): Tile(*shuffle[18])})
 
 
 def neighbours(tile):
