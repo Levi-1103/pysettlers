@@ -139,8 +139,3 @@ newgame.check_winner()
 print("PLayer " + str(newgame.winner.name) + " is the winner")
 
 #newgame.print_players_data()
-
-
-
-        
-        

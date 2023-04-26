@@ -18,7 +18,7 @@ window_surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 background = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
 manager = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT),'theme.json')
 
-font = pygame.font.Font(None, 80)
+
 
 
 BLACK = (0, 0, 0)
@@ -112,11 +112,14 @@ board_tiles_rect.fill((255,255,255,0))
 
 
 def draw_board(skip, board, destination):
+    
     for coord in board.tiles:
         if coord not in skip:
             pass
         if board.tiles[coord] != 'Water':
            destination.blit(textureToVal(board.tiles[coord].resource),hexToPixel(75,coord.q,coord.r, 0))
+           pygame_gui.elements.UILabel(relative_rect=pygame.Rect(hexToPixel(75,coord.q,coord.r, 0)[0],hexToPixel(75,coord.q,coord.r, 0)[1],150,150),text=str(board.tiles[coord].returnNum()),object_id=pygame_gui.core.ObjectID(class_id='@rollNums'),manager=manager)
+        
         elif coord not in skip and board.tiles[coord] == 'Water':
             destination.blit(water, hexToPixel(75,coord.q,coord.r, 0))
 

@@ -26,5 +26,26 @@
         }
 
         
+    },
+
+
+    "label":
+    {
+        "font":
+        {
+            "name":"fira_code",
+            "size": 17
+        }
+    },
+
+    "@rollNums":
+    {
+        "font":
+        {
+            "name":"fira_code",
+            "size": 30
+        }
     }
+    
 }
+  
