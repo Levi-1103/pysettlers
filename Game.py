@@ -34,13 +34,13 @@ class Game:
 
     def check_winner(self):
         for player in self.players:
-            if self.players[player].victory_points == 10:
+            if player.victory_points == 10:
                 self.winner = player
             
 
     def end_turn(self):
-        current_player_index = (current_player_index + 1) % len(self.players)
-        self.current_player = self.players[current_player_index]
+        self.current_player_index = (self.current_player_index + 1) % len(self.players)
+        self.current_player = self.players[self.current_player_index]
         return self.current_player
     
     def roll_dice(self):
@@ -62,7 +62,8 @@ class Game:
         
     
     def place_settlement(self,vertex,player):
-        if player.resources.get((TileResource.Brick <= 1) and (TileResource.Lumber <= 1) and (TileResource.Wool <= 1) and (TileResource.Grain <= 1)):
+        #if player.resources.get(((TileResource.Brick <= 1)) and (TileResource.Lumber <= 1) and (TileResource.Wool <= 1) and (TileResource.Grain <= 1)):
+        if (player.resources.get(TileResource.Brick) <=1) and (player.resources.get(TileResource.Lumber) <=1) and (player.resources.get(TileResource.Wool) <=1) and (player.resources.get(TileResource.Grain) <=1):
             if self.board.vertices[vertex] == '':
                 self.board.vertices.update({vertex: Building(BuildingType.Settlement,player)})
                 player.add_settlement(vertex)
@@ -114,7 +115,7 @@ class Game:
 
 newgame = Game(4)
 
-print(newgame.board.tiles.values())
+#print(newgame.board.tiles.values())
 
 
 def print_board(newgame):
@@ -124,16 +125,20 @@ def print_board(newgame):
                 if newgame.board.vertices[vert] !='':
                     print(vert)
 
-
+print(newgame.current_player.resources)
 newgame.place_settlement(Vertex(q=5, r=2, s='S'),newgame.current_player)
-
+print(newgame.current_player.resources)
 #print_board(newgame)
 
-newgame.roll_dice()
+#newgame.roll_dice()
+newgame.end_turn()
+newgame.current_player.victory_points = 10
+print(newgame.winner)
+newgame.check_winner()
 
-print(newgame.current_player.resources)
+print("PLayer " + str(newgame.winner.name) + " is the winner")
 
-newgame.print_players_data()
+#newgame.print_players_data()
 
 
 
