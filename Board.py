@@ -25,6 +25,7 @@ class Grid:
 
    
     def defaultBoard(self):
+        '''Populates the Game Board with the Catan Starter Board'''
         # 1st Row
         self.tiles.update({Hex(3, 1): Tile(TileResource.Ore, 10)})
         self.tiles.update({Hex(4, 1): Tile(TileResource.Wool, 2)})
@@ -54,6 +55,7 @@ class Grid:
         # code to delete empty tiles
 
     def random_board(self):
+        '''Populates the Board with Random tiles that are generated in Map.py'''
         self.tiles.update({Hex(3, 1): Tile(*shuffle[0])})
         self.tiles.update({Hex(4, 1): Tile(*shuffle[1])})
         self.tiles.update({Hex(5, 1): Tile(*shuffle[2])})
@@ -81,6 +83,9 @@ class Grid:
 
 
 def neighbours(tile):
+    '''
+    Returns neighbouring tiles based on an input Tile
+    '''
     q = tile.q
     r = tile.r
     return [
