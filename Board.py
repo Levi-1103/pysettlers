@@ -154,8 +154,8 @@ def endpoints(edge):
         ]
     elif s == 'W':
         return [
-            Hex(q, r - 1, 'S'),
-            Hex(q - 1, r + 1, 'N')
+            Vertex(q, r - 1, 'S'),
+            Vertex(q - 1, r + 1, 'N')
         ]
 
 

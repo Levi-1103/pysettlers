@@ -55,25 +55,3 @@ new_board = merge(restest,hexNum)
 
 #shuffle tiles for map
 shuffle = random.sample(new_board, k=len(new_board))
-
-
-#empty dict for tiles
-map = {
-
-}
-
-#populate dict with tile coords
-for q in range(5):
-    for r in range(5):
-        map.update({(q,r) : ''})
-
-
-#add tile data to grid
-for i in range(5):
-        for j in range(5):
-            if map.get((i,j)) != None:
-                #fix tile add
-                map.update({(i,j): Tile(shuffle[0][0],shuffle[0][1])})
-
-
-
