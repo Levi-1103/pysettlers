@@ -32,6 +32,11 @@ class Game:
             print("Current player is  " + str(self.current_player.name))
             print(str(self.current_player.resources))
 
+    def check_winner(self):
+        for player in self.players:
+            if self.players[player].victory_points == 10:
+                self.winner = player
+            
 
     def end_turn(self):
         current_player_index = (current_player_index + 1) % len(self.players)
@@ -57,12 +62,40 @@ class Game:
         
     
     def place_settlement(self,vertex,player):
-        if self.board.vertices[vertex] == '':
-            self.board.vertices.update({vertex: Building(BuildingType.Settlement,player)})
-            player.add_settlement(vertex)
+        if player.resources.get((TileResource.Brick <= 1) and (TileResource.Lumber <= 1) and (TileResource.Wool <= 1) and (TileResource.Grain <= 1)):
+            if self.board.vertices[vertex] == '':
+                self.board.vertices.update({vertex: Building(BuildingType.Settlement,player)})
+                player.add_settlement(vertex)
+                player.add_victory_point()
+                player.remove_resource(TileResource.Brick,1)
+                player.remove_resource(TileResource.Lumber,1)
+                player.remove_resource(TileResource.Wool,1)
+                player.remove_resource(TileResource.Grain,1)
+        else:
+            print("Not Enough Resources")
+
+    def upgrade_settlement(self,vertex,player):
+        if player.resources.get((TileResource.Grain <= 2) and (TileResource.Ore <= 3) and ((TileResource.Wool <= 3) or (TileResource.Lumber <= 3) or (TileResource.Brick <= 3))):
+            self.board.vertices.update({vertex: Building(BuildingType.City,player)})
+            player.add_city(vertex)
             player.add_victory_point()
+            
+        else:
+            print("Not Enough Resources")
+
     
     def place_road(self,edge,player):
+        if player.resources.get((TileResource.Brick <= 1) and (TileResource.Lumber <= 1)):
+            if self.board.edges[edge] == '':
+                if self.edges[edge]:
+                    self.board.edges.update({edge: Road(player)})
+                    player.add_road(edge)
+                    player.remove_resource(TileResource.Brick,1)
+                    player.remove_resource(TileResource.Lumber,1)
+        else:
+            print("Not Enough Resources")
+    
+    def buy_development_card():
         pass
 
     def print_players_data(self):
@@ -71,6 +104,11 @@ class Game:
             print(player.resources)
             print("Victory Points", player.victory_points)
 
+    def first_turn(self):
+        pass
+
+    def trade_resource(self):
+        pass
 
 
 

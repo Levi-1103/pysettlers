@@ -24,6 +24,8 @@ font = pygame.font.Font(None, 80)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
+BLUE = ()
+GREEN = ()
 
 #import textures
 
@@ -72,6 +74,7 @@ skip = [
     Hex(4,6)
 ]
 
+
 board = Grid(7)
 
 board.defaultBoard()
@@ -102,38 +105,21 @@ left_rect.fill((150, 150, 255))
 right_rect_width = SCREEN_WIDTH // 4
 right_rect_height = SCREEN_HEIGHT
 right_rect = pygame.Surface((right_rect_width, right_rect_height))
-right_rect.fill((255, 255, 255))
+right_rect.fill(WHITE)
 
 board_tiles_rect = pygame.Surface((left_rect_width, left_rect_height), pygame.SRCALPHA)
 board_tiles_rect.fill((255,255,255,0))
 
-board_offset = 50
 
-for coord in board.tiles:
-    if coord not in skip:
-        pass
-    if board.tiles[coord] != 'Water':
-       board_tiles_rect.blit(textureToVal(board.tiles[coord].resource),hexToPixel(75,coord.q,coord.r, 0))
-    elif coord not in skip and board.tiles[coord] == 'Water':
-        board_tiles_rect.blit(water, hexToPixel(75,coord.q,coord.r, 0))
+def draw_board(skip, board, destination):
+    for coord in board.tiles:
+        if coord not in skip:
+            pass
+        if board.tiles[coord] != 'Water':
+           destination.blit(textureToVal(board.tiles[coord].resource),hexToPixel(75,coord.q,coord.r, 0))
+        elif coord not in skip and board.tiles[coord] == 'Water':
+            destination.blit(water, hexToPixel(75,coord.q,coord.r, 0))
 
-
-
-end_turn_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 100), (100, 50)),
-                                            text='End Turn',
-                                            manager=manager)
-
-roll_dice_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3 + 100, SCREEN_HEIGHT - 100), (100, 50)),
-                                            text='Roll Dice',
-                                            manager=manager)
-
-trade_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 200), (100, 50)),
-                                            text='Trade',
-                                            manager=manager)
-
-
-verts_rect = pygame.Surface((left_rect_width, left_rect_height), pygame.SRCALPHA)
-verts_rect.fill((255,255,255,0))
 
 def print_verts(surface,list):
     x = 60
@@ -148,17 +134,61 @@ def print_verts(surface,list):
 
 
 
+
+
+
+
+
+
+build_road_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 300), (100, 50)),
+                                            text='Build Road',
+                                            manager=manager)
+
+build_settlement_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3 + 100, SCREEN_HEIGHT - 300), (100, 50)),
+                                            text='Build Settlement',
+                                            manager=manager)
+
+upgrade_settlement_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3 + 200, SCREEN_HEIGHT - 300), (100, 50)),
+                                            text='Upgrade Settlement',
+                                            manager=manager)
+
+
+trade_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 200), (100, 50)),
+                                            text='Trade',
+                                            manager=manager)
+
+
+end_turn_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3 + 100, SCREEN_HEIGHT - 100), (100, 50)),
+                                            text='End Turn',
+                                            manager=manager)
+
+roll_dice_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 100), (100, 50)),
+                                            text='Roll Dice',
+                                            manager=manager)
+
+
+
+verts_rect = pygame.Surface((left_rect_width, left_rect_height), pygame.SRCALPHA)
+
+
+
+
+
+
+
 empty_verts = []
 
-for coord in board.tiles.keys():
-        if board.tiles[coord] != "Water":
-            for key in corners(coord):
-                if board.vertices[key] == '':
-                    if key in empty_verts:
-                        pass
-                    else:
-                        empty_verts.append(key)
+def fill_empty_verts(dest):
+    for coord in board.tiles.keys():
+            if board.tiles[coord] != "Water":
+                for key in corners(coord):
+                    if board.vertices[key] == '':
+                        if key in dest:
+                            pass
+                        else:
+                            dest.append(key)
 
+fill_empty_verts(empty_verts)
 
 class TradeWindow(UIWindow):
     def __init__(self,manager):
@@ -174,7 +204,11 @@ class TradeWindow(UIWindow):
 trade_window = TradeWindow(manager)
 
 class VertButton:
-    pass
+    def __init__(self):
+        is_active = True
+
+    
+    
 
 
 
@@ -193,12 +227,12 @@ ore_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset 
 grain_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 4,150,150),text="Grain: " + str(current_player.resources.get(TileResource.Grain)),manager=manager)
 wool_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 5,150,150),text="Wool: " + str(current_player.resources.get(TileResource.Wool)),manager=manager)
 
+victory_points_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 6,150,150),text="P1 Victory Points: " + str(current_player.victory_points),manager=manager)
 
 
 clock = pygame.time.Clock()
 is_running = True
 while is_running:
-    window_surface.fill((0,0,0))
     time_delta = clock.tick(60)/1000.0
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -213,24 +247,37 @@ while is_running:
                 current_player_index = (current_player_index + 1) % len(players)
                 current_player = players[current_player_index]
                 player_name.set_text(current_player.name)
+                victory_points_label.set_text(str(current_player.victory_points))
                 print('End Turn')
+                empty_verts.pop()
+                
+                
+                
                 
         
 
         manager.process_events(event)
 
 
+    manager.update(time_delta)
     
 
-    manager.update(time_delta)
+    window_surface.fill(BLACK)
 
     window_surface.blit(background, (0, 0))
-    background.blit(left_rect, (0, 0))
     
+    left_rect.fill((150, 150, 255))
+
+    draw_board(skip, board, left_rect)
+    print_verts(left_rect,empty_verts)
+    
+    
+
+    # left_rect.blit(board_tiles_rect,(-100,50))
+    # left_rect.blit(verts_rect,(-100,50))
+    
+    background.blit(left_rect, (0, 0))
     background.blit(right_rect, (left_rect_width, 0))
-    left_rect.blit(board_tiles_rect,(-100,50))
-    print_verts(verts_rect,empty_verts)
-    left_rect.blit(verts_rect,(-100,50))
 
 
     manager.draw_ui(window_surface)

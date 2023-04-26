@@ -116,7 +116,7 @@ def main():
                 pygame.quit()
                 quit()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                player1.add_resource(TileResource.Sheep, 2)
+                player1.add_resource(TileResource.Wool, 2)
                 player2.add_resource(TileResource.Brick, 2)
         # Draw the screen
         screen.blit(left_rect, (0, 0))
