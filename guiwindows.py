@@ -121,15 +121,44 @@ def draw_board(skip, board, destination):
             destination.blit(water, hexToPixel(75,coord.q,coord.r, 0))
 
 
+class VertButton:
+    def __init__(self,screen, color, center, radius):
+        self.screen = screen
+        self.color = color
+        self.center = center
+        self.radius = radius
+        self.is_active = True
+
+    def draw(self):
+        pygame.draw.circle(self.screen, self.color, self.center, self.radius)
+
+    def is_clicked(self, mouse_pos):
+        if self.is_active == True:
+            distance = ((self.center[0] - mouse_pos[0]) ** 2 + (self.center[1] - mouse_pos[1]) ** 2) ** 0.5
+            self.disable()
+            return distance <= self.radius
+    
+    def disable(self):
+        self.is_active = False
+        
+
+
+buttons = []
+
 def print_verts(surface,list):
     x = 60
     y = 0
     for key in list:
         if key.s == 'N':
-            pygame.draw.circle(surface,'#FF0000',vertToPixel(75,key.q,key.r,x,y),10)
+            button = VertButton(surface,'#FF0000',vertToPixel(75,key.q,key.r,x,y),10)
+            buttons.append(button)
+            #pygame.draw.circle(surface,'#FF0000',vertToPixel(75,key.q,key.r,x,y),10)
 
         if key.s =='S':
             pygame.draw.circle(surface,'#FFFFFF',vertToPixel(75,key.q,key.r,x,y + 75 * 2),10)
+
+def print_buttons(surface,list):
+    pass
 
 
 
@@ -203,9 +232,7 @@ class TradeWindow(UIWindow):
 
 trade_window = TradeWindow(manager)
 
-class VertButton:
-    def __init__(self):
-        is_active = True
+
 
     
     
@@ -234,6 +261,7 @@ clock = pygame.time.Clock()
 is_running = True
 while is_running:
     time_delta = clock.tick(60)/1000.0
+    cursor = pygame.mouse.get_pos()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             is_running = False
@@ -270,6 +298,12 @@ while is_running:
 
     draw_board(skip, board, left_rect)
     print_verts(left_rect,empty_verts)
+
+    for button in buttons:
+        button.draw()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if button.is_clicked(cursor) == True:
+                print("Clicked")
     
     
 
@@ -279,7 +313,7 @@ while is_running:
     background.blit(left_rect, (0, 0))
     background.blit(right_rect, (left_rect_width, 0))
 
-
+  
     manager.draw_ui(window_surface)
 
     
