@@ -29,15 +29,14 @@ clock = pygame.time.Clock()
 def main_menu():
     '''Run game start menu'''
     is_running = True
-
-    start_game = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 275), (100, 50)),
-                                             text='Start Game',
+    background.blit(menu_background,(0,0))
+    start_game = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 3, SCREEN_HEIGHT // 3), (SCREEN_WIDTH / 4, 50)),
+                                             text='START GAME',
                                              manager=manager)
-    
-    
-
+    quit_game = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2), (SCREEN_WIDTH / 4, 50)),
+                                             text='QUIT GAME',
+                                             manager=manager)
     while is_running:
-        background.fill(BLACK)
         time_delta = clock.tick(60)/1000.0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -47,7 +46,8 @@ def main_menu():
                 if event.ui_element == start_game:
                     mode_menu()
                     is_running = False
-
+                if event.ui_element == quit_game:
+                    is_running = False
             manager.process_events(event)
 
         manager.update(time_delta)
@@ -62,18 +62,23 @@ def mode_menu():
     '''Run menu page for game modes'''
     manager.clear_and_reset()
     is_running = True
+    background.blit(menu_background,(0,0))
+    option_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((SCREEN_WIDTH // 3, SCREEN_HEIGHT//4), (SCREEN_WIDTH / 4, 50)),
+                                             text='Select Board Type',
+                                             manager=manager)
 
-    default_board = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 275), (100, 50)),
+    default_board = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 3, SCREEN_HEIGHT // 2), (SCREEN_WIDTH / 4, 50)),
                                              text='Default Board',
                                              manager=manager)
     
-    random_board = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 275 * 2), (100, 50)),
+    random_board = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 3, SCREEN_HEIGHT // 3), (SCREEN_WIDTH / 4, 50)),
                                              text='Random Board',
                                              manager=manager)
     
 
+
     while is_running:
-        background.fill(BLACK)
+        
         time_delta = clock.tick(60)/1000.0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -261,9 +266,10 @@ def import_assets():
     ore = pygame.image.load("assets\Ore.png").convert_alpha()
     wool = pygame.image.load("assets\Wool.png").convert_alpha()
     water = pygame.image.load("assets\Hex.png").convert_alpha()
-    return desert,brick,grain,lumber,ore,wool,water
+    menu_background = pygame.image.load("assets\menu_image.png").convert_alpha()
+    return desert,brick,grain,lumber,ore,wool,water, menu_background
 
-desert, brick, grain, lumber, ore, wool, water = import_assets()
+desert, brick, grain, lumber, ore, wool, water, menu_background = import_assets()
 
 def textureToVal(value):
     '''Converts resources for a tile into a texture'''
@@ -308,7 +314,8 @@ def draw_board(board, destination):
             pass
         if board.tiles[coord] != 'Water':
            destination.blit(textureToVal(board.tiles[coord].resource),hexToPixel(75,coord.q,coord.r, 0))
-           pygame_gui.elements.UILabel(relative_rect=pygame.Rect(hexToPixel(75,coord.q,coord.r, 0)[0],hexToPixel(75,coord.q,coord.r, 0)[1],150,150),text=str(board.tiles[coord].returnNum()),object_id=pygame_gui.core.ObjectID(class_id='@rollNums'),manager=manager)
+           pygame.draw.circle(destination,WHITE,(hexToPixel(75,coord.q,coord.r, 70)[0],hexToPixel(75,coord.q,coord.r, 70)[1]),20)
+           pygame_gui.elements.UILabel(relative_rect=pygame.Rect(hexToPixel(75,coord.q,coord.r, -5)[0],hexToPixel(75,coord.q,coord.r, -5)[1],150,150),text=str(board.tiles[coord].returnNum()),object_id=pygame_gui.core.ObjectID(class_id='@rollNums'),manager=manager)
         
         elif coord not in skip and board.tiles[coord] == 'Water':
             destination.blit(water, hexToPixel(75,coord.q,coord.r, 0))
