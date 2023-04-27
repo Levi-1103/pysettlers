@@ -45,6 +45,15 @@
             "name":"fira_code",
             "size": 30
         }
+    },
+
+    "@vertButtons":
+    {
+        "misc":
+        {
+            "shape": "ellipse"
+        }
+        
     }
     
 }

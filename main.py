@@ -1,7 +1,7 @@
 import pygame
 import pygame_gui
 from Game import *
-from drawHex import hexToPixel
+from drawHex import hexToPixel, vertToPixel
 
 
 
@@ -24,7 +24,6 @@ window_surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 background = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
 manager = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT),'theme.json')
 clock = pygame.time.Clock()
-
 
 
 
@@ -123,6 +122,11 @@ def game_loop(mode):
     right_rect = pygame.Surface((right_rect_width, right_rect_height))
     right_rect.fill(WHITE)
 
+    verts_surface = pygame.Surface((left_rect_width, left_rect_height), pygame.SRCALPHA)
+    verts_surface.fill((255,255,255,0))
+
+    
+    
 
     #set up buttons
     build_road_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 300), (100, 50)),
@@ -163,6 +167,12 @@ def game_loop(mode):
 
     draw_board(new_game.board, left_rect)
 
+    empty_verts = []
+    vert_buttons = []
+
+    
+
+    fill_empty_verts(empty_verts,new_game.board)
 
     while is_running:
         time_delta = clock.tick(60)/1000.0
@@ -177,20 +187,37 @@ def game_loop(mode):
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == end_turn_button:
                     new_game.end_turn()
-                    
-                    
+                    verts_surface.fill((255,255,255,0))
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == build_road_button:
                     new_game.current_player.add_resource(TileResource.Brick, 1)
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == build_settlement_button:
+                    print_verts(verts_surface,empty_verts,vert_buttons)
                     print("Build Settlement")
+                    print(vert_buttons[0][0])
+
+            # if event.type == pygame.MOUSEBUTTONDOWN:
+            #     if event.button == 1:
+            #         print("Test")  # Left mouse button
+                            
+                
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == upgrade_settlement_button:
                     print("Upgrade Settlement")
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == roll_dice_button:
-                    print("Dice Roll")            
+                    print("Dice Roll")
+            if event.type == pygame_gui.UI_BUTTON_PRESSED:
+                for row in vert_buttons:
+                    for button in row:
+                        if event.ui_element == button:
+                            print(row[0])
+
+                # if event.ui_element == vert_buttons[0][1]:
+                #     print(vert_buttons[0][0])            
+
+                
                 
             manager.process_events(event)
 
@@ -202,6 +229,8 @@ def game_loop(mode):
 
         background.blit(left_rect, (0, 0))
         background.blit(right_rect, (left_rect_width, 0))
+        background.blit(verts_surface, (0, 0))
+
 
         update_labels(new_game, player_name_label, brick_label, lumber_label, ore_label, grain_label, wool_label, victory_points_label)
 
@@ -283,5 +312,37 @@ def draw_board(board, destination):
 
 
 
+def fill_empty_verts(dest,board):
+    for coord in board.tiles.keys():
+            if board.tiles[coord] != "Water":
+                for key in corners(coord):
+                    if board.vertices[key] == '':
+                        if key in dest:
+                            pass
+                        else:
+                            dest.append(key)
+
+
+
+def print_verts(surface,list,buttons):    
+    x = 60
+    y = 0
+    for key in list:
+        if key.s == 'N':
+            #button = VertButton(surface,'#FF0000',vertToPixel(75,key.q,key.r,x,y),10)
+            #buttons.append(button)
+            buttons.append((key,pygame_gui.elements.UIButton(relative_rect=pygame.Rect((vertToPixel(75,key.q,key.r,50,-10)), (25, 25)),
+                                            text='',object_id=pygame_gui.core.ObjectID(class_id='@vertButtons'),
+                                            manager=manager)))
+            pygame.draw.circle(surface,'#FF0000',vertToPixel(75,key.q,key.r,x,y),10)
+
+        if key.s =='S':
+            pygame.draw.circle(surface,'#FFFFFF',vertToPixel(75,key.q,key.r,x,y + 75 * 2),10)
+            buttons.append((key,pygame_gui.elements.UIButton(relative_rect=pygame.Rect((vertToPixel(75,key.q,key.r,50,-10 + 75 * 2)), (25, 25)),
+                                            text='',object_id=pygame_gui.core.ObjectID(class_id='@vertButtons'),
+                                            manager=manager)))
+            # pygame_gui.elements.UIButton(relative_rect=pygame.Rect((vertToPixel(75,key.q,key.r,50,-10 + 75 * 2)), (25, 25)),
+            #                                 text='',object_id=pygame_gui.core.ObjectID(class_id='@vertButtons'),
+            #                                 manager=manager)
 
 main_menu()
