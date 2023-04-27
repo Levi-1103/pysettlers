@@ -41,6 +41,7 @@ class Game:
     def end_turn(self):
         self.current_player_index = (self.current_player_index + 1) % len(self.players)
         self.current_player = self.players[self.current_player_index]
+        print("End Turn")
         return self.current_player
     
     def roll_dice(self):
@@ -113,9 +114,7 @@ class Game:
 
 
 
-newgame = Game(4)
 
-#print(newgame.board.tiles.values())
 
 
 def print_board(newgame):
@@ -125,17 +124,3 @@ def print_board(newgame):
                 if newgame.board.vertices[vert] !='':
                     print(vert)
 
-print(newgame.current_player.resources)
-newgame.place_settlement(Vertex(q=5, r=2, s='S'),newgame.current_player)
-print(newgame.current_player.resources)
-#print_board(newgame)
-
-#newgame.roll_dice()
-newgame.end_turn()
-newgame.current_player.victory_points = 10
-print(newgame.winner)
-newgame.check_winner()
-
-print("PLayer " + str(newgame.winner.name) + " is the winner")
-
-#newgame.print_players_data()
