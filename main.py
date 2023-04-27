@@ -209,7 +209,10 @@ def game_loop(mode):
                     for button in row:
                         if event.ui_element == button:
                             #print(row[0])
-                            new_game.place_settlement(row[0],new_game.current_player)
+                            try:
+                                new_game.place_settlement(row[0],new_game.current_player)
+                            except:
+                                pygame_gui.windows.UIMessageWindow(rect=pygame.Rect(100,100,100,100),html_message="Not Enough Resources!",manager=manager)
                             
 
                 # if event.ui_element == vert_buttons[0][1]:

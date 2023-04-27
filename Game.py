@@ -65,17 +65,18 @@ class Game:
         
     
     def place_settlement(self,vertex,player):
-        if (player.resources.get(TileResource.Brick) >=1) or (player.resources.get(TileResource.Lumber) >=1) or (player.resources.get(TileResource.Wool) >=1) or (player.resources.get(TileResource.Grain) >=1):
-            if self.board.vertices[vertex] == '':
-                self.board.vertices.update({vertex: Building(BuildingType.Settlement,player)})
-                player.add_settlement(vertex)
-                player.remove_resource(TileResource.Brick,1)
-                player.remove_resource(TileResource.Lumber,1)
-                player.remove_resource(TileResource.Wool,1)
-                player.remove_resource(TileResource.Grain,1)
-                player.add_victory_point()
-        else:
-            print("Not Enough Resources")
+            if (player.resources.get(TileResource.Brick) >=1) or (player.resources.get(TileResource.Lumber) >=1) or (player.resources.get(TileResource.Wool) >=1) or (player.resources.get(TileResource.Grain) >=1):
+                if self.board.vertices[vertex] == '':
+                    self.board.vertices.update({vertex: Building(BuildingType.Settlement,player)})
+                    player.add_settlement(vertex)
+                    player.remove_resource(TileResource.Brick,1)
+                    player.remove_resource(TileResource.Lumber,1)
+                    player.remove_resource(TileResource.Wool,1)
+                    player.remove_resource(TileResource.Grain,1)
+                    player.add_victory_point()
+            else:
+                raise Exception("Not Enough Resources")            
+           
 
     def upgrade_settlement(self,vertex,player):
         if player.resources.get((TileResource.Grain <= 2) and (TileResource.Ore <= 3) and ((TileResource.Wool <= 3) or (TileResource.Lumber <= 3) or (TileResource.Brick <= 3))):
