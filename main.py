@@ -8,26 +8,28 @@ from drawHex import hexToPixel
 
 pygame.init()
 
+#Constants
+
 SCREEN_WIDTH = 1600
 SCREEN_HEIGHT = 900
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 BLUE = (150, 150, 255)
-GREEN = ()
 
 pygame.display.set_caption('Settlers')
+
 window_surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 background = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
 manager = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT),'theme.json')
-
 clock = pygame.time.Clock()
 
 
 
 
 def main_menu():
+    '''Run game start menu'''
     is_running = True
 
     start_game = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 275), (100, 50)),
@@ -59,6 +61,7 @@ def main_menu():
         pygame.display.update()
 
 def mode_menu():
+    '''Run menu page for game modes'''
     manager.clear_and_reset()
     is_running = True
 
@@ -99,6 +102,7 @@ def mode_menu():
 
 
 def game_loop(mode):
+    '''Run main Screen'''
 
     new_game = Game(4,mode)
     manager.clear_and_reset()
@@ -106,17 +110,21 @@ def game_loop(mode):
       
     background.fill(BLACK)
     
-    
+    #sets up left side of screen
     left_rect_width = SCREEN_WIDTH // 4 * 3
     left_rect_height = SCREEN_HEIGHT
     left_rect = pygame.Surface((left_rect_width, left_rect_height))
     left_rect.fill(BLUE)
+
+    #sets up right side of screen
 
     right_rect_width = SCREEN_WIDTH // 4
     right_rect_height = SCREEN_HEIGHT
     right_rect = pygame.Surface((right_rect_width, right_rect_height))
     right_rect.fill(WHITE)
 
+
+    #set up buttons
     build_road_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 300), (100, 50)),
                                             text='Build Road', tool_tip_text="Press to Build a Road. It costs : 1 Brick + 1 Lumber",
                                             manager=manager)
@@ -136,9 +144,12 @@ def game_loop(mode):
                                                 text='Roll Dice', tool_tip_text="Roll Dice To Get Resources",
                                                 manager=manager)
     
+
+    #set up labels
     x  = SCREEN_WIDTH// 4 * 3
     y = 0
     yoffset = 50    
+
     player_name_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y,150,150),text="Player " + str(new_game.current_player.name),manager=manager)
     resources_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset - 25  ,150,150),text="Resources",manager=manager)
 
@@ -166,12 +177,11 @@ def game_loop(mode):
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == end_turn_button:
                     new_game.end_turn()
-                    player_name_label.set_text("Player " + str(new_game.current_player.name))
-                    victory_points_label.set_text("Victory Points: " + str(new_game.current_player.victory_points))
+                    
                     
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == build_road_button:
-                    print("Build Road")
+                    new_game.current_player.add_resource(TileResource.Brick, 1)
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == build_settlement_button:
                     print("Build Settlement")
@@ -193,13 +203,25 @@ def game_loop(mode):
         background.blit(left_rect, (0, 0))
         background.blit(right_rect, (left_rect_width, 0))
 
-        manager.draw_ui(window_surface)
+        update_labels(new_game, player_name_label, brick_label, lumber_label, ore_label, grain_label, wool_label, victory_points_label)
 
+
+        manager.draw_ui(window_surface)
         pygame.display.update()
 
+def update_labels(new_game, player_name_label, brick_label, lumber_label, ore_label, grain_label, wool_label, victory_points_label):
+    player_name_label.set_text("Player " + str(new_game.current_player.name))
+    victory_points_label.set_text("Victory Points: " + str(new_game.current_player.victory_points))
+    brick_label.set_text("Brick: " + str(new_game.current_player.resources.get
+        (TileResource.Brick)))
+    lumber_label.set_text("Lumber: " + str(new_game.current_player.resources.get(TileResource.Lumber)))
+    ore_label.set_text("Ore: " + str(new_game.current_player.resources.get(TileResource.Ore)))
+    grain_label.set_text("Grain: " + str(new_game.current_player.resources.get(TileResource.Grain)))
+    wool_label.set_text("Wool: " + str(new_game.current_player.resources.get(TileResource.Wool)))
 
-#import textures
+
 def import_assets():
+    '''Import Game Assets'''
     desert = pygame.image.load("assets\Desert.png").convert_alpha() #120x140
     brick = pygame.image.load("assets\Brick.png").convert_alpha()
     grain = pygame.image.load("assets\Grain.png").convert_alpha()
@@ -212,6 +234,7 @@ def import_assets():
 desert, brick, grain, lumber, ore, wool, water = import_assets()
 
 def textureToVal(value):
+    '''Converts resources for a tile into a texture'''
     match value:
         case TileResource.Brick:
             return brick
@@ -227,7 +250,12 @@ def textureToVal(value):
             return wool
 
 def draw_board(board, destination):
-    
+    '''
+    Draws draws board tiles and tile numbers onto screen
+
+    '''
+
+    #Empty tiles from grid that need to be skipped to have the hexagonal catan board shape
     skip = [
     Hex(0,0),
     Hex(0,1),
@@ -252,6 +280,8 @@ def draw_board(board, destination):
         
         elif coord not in skip and board.tiles[coord] == 'Water':
             destination.blit(water, hexToPixel(75,coord.q,coord.r, 0))
+
+
 
 
 main_menu()

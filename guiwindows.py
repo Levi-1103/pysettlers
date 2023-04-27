@@ -148,8 +148,6 @@
 #         if key.s =='S':
 #             pygame.draw.circle(surface,'#FFFFFF',vertToPixel(75,key.q,key.r,x,y + 75 * 2),10)
 
-# def print_buttons(surface,list):
-#     pass
 
 
 # build_road_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 300), (100, 50)),
