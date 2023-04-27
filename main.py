@@ -217,14 +217,13 @@ def game_loop(mode):
                 for row in vert_buttons:
                     for button in row:
                         if event.ui_element == button:
-                            #print(row[0])
+                            print(row)
                             try:
                                 new_game.place_settlement(row[0],new_game.current_player)
                                 #row[1].visible = False
-                                
                                 vert_manager.clear_and_reset()
                                 empty_verts.remove(row[0])
-
+                                
                             except:
                                 pygame_gui.windows.UIMessageWindow(rect=pygame.Rect(100,100,100,100),html_message="Not Enough Resources!",manager=manager)
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
@@ -254,6 +253,7 @@ def game_loop(mode):
         
         window_surface.blit(background, (0, 0))
         print_player_verts(left_rect,new_game.players)
+        print_player_roads(left_rect,new_game.players)
 
         background.blit(left_rect, (0, 0))
         background.blit(right_rect, (left_rect_width, 0))
