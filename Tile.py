@@ -7,6 +7,8 @@ class Tile:
         self.rollNum = rollNum
         self.has_robber = False
 
+    def returnNum(self):
+        return self.rollNum
 #store edges and verts in tile ???
 #or have seperate dicts / lists for it
 #possibly lists are better then can have  a list of lists

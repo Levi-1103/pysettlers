@@ -16,7 +16,7 @@ def tiles():
 
             if i == 0:
                 continue
-        tiles.append(TileResource.Nothing)
+        tiles.append(TileResource.Desert)
 
         return tiles
 
@@ -42,7 +42,7 @@ hexNum = tileNum()
 
 #add Empty tile to resource list
 restest = random.sample(hexRes[:18],18)
-restest.append(TileResource.Nothing)
+restest.append(TileResource.Desert)
 
 #function for merging lists
 def merge(list1, list2):
@@ -55,37 +55,3 @@ new_board = merge(restest,hexNum)
 
 #shuffle tiles for map
 shuffle = random.sample(new_board, k=len(new_board))
-
-#empty dict for tiles
-map = {
-
-}
-
-#populate dict with tile coords
-for q in range(5):
-    for r in range(5):
-        map.update({(q,r) : ''})
-
-
-
-#update map with null tiles
-map.update({(0,0): None})
-map.update({(1,0): None})
-map.update({(0,1): None})
-map.update({(4,3): None})
-map.update({(3,4): None})
-map.update({(4,4): None})
-
-#add tile data to grid
-for i in range(5):
-        for j in range(5):
-            if map.get((i,j)) != None:
-                #fix tile add
-                map.update({(i,j): Tile(shuffle[0][0],shuffle[0][1])})
-
-
-print('')
-
-print(map.items())
-
-
