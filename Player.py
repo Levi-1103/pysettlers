@@ -13,7 +13,8 @@ class Player:
         self.victory_points = 0
 
     def add_resource(self, resource, amount):
-        self.resources[resource] += amount
+        if resource != TileResource.Desert:
+            self.resources[resource] += amount
         
     def remove_resource(self, resource, amount):
         if self.resources[resource] >= amount:

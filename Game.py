@@ -14,9 +14,9 @@ class Game:
         self.resource_cards = {}
         self.development_cards = {}
 
-        self.players = []
-        for i in range(playerNum):
-            self.players.append(Player(i + 1,'RED'))
+        self.players = [Player(1,'RED'), Player(2,'BLUE'),Player(3,'WHITE'),Player(4,'GREEN')]
+        # for i in range(playerNum):
+        #     self.players.append(Player(i + 1,'RED'))
 
         self.current_player_index = 0
         self.current_player = self.players[self.current_player_index]
