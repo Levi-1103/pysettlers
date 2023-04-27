@@ -5,9 +5,7 @@ from drawHex import hexToPixel, vertToPixel
 from trade_window import TradeWindow
 
 pygame.init()
-
 #Constants
-
 SCREEN_WIDTH = 1600
 SCREEN_HEIGHT = 900
 BLACK = (0, 0, 0)
@@ -106,7 +104,6 @@ def mode_menu():
 
         pygame.display.update()
 
-
 def game_loop(mode):
     '''Run main Screen'''
 
@@ -123,7 +120,6 @@ def game_loop(mode):
     left_rect.fill(BLUE)
 
     #sets up right side of screen
-
     right_rect_width = SCREEN_WIDTH // 4
     right_rect_height = SCREEN_HEIGHT
     right_rect = pygame.Surface((right_rect_width, right_rect_height))
@@ -171,6 +167,7 @@ def game_loop(mode):
     wool_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 5,150,150),text="Wool: " + str(new_game.current_player.resources.get(TileResource.Wool)),manager=manager)
 
     victory_points_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 6,270,150),text="Victory Points: " + str(new_game.current_player.victory_points),manager=manager)
+    dice_roll_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 6,270,150),text="Roll: " + str(new_game.current_player.victory_points),manager=manager)
 
     draw_board(new_game.board, left_rect)
 
@@ -279,6 +276,7 @@ def update_labels(new_game, player_name_label, brick_label, lumber_label, ore_la
     ore_label.set_text("Ore: " + str(new_game.current_player.resources.get(TileResource.Ore)))
     grain_label.set_text("Grain: " + str(new_game.current_player.resources.get(TileResource.Grain)))
     wool_label.set_text("Wool: " + str(new_game.current_player.resources.get(TileResource.Wool)))
+    
 
 
 def import_assets():

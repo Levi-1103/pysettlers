@@ -63,20 +63,51 @@ class Game:
                 print(self.board.tiles[tile].resource)
                 self.current_player.add_resource(self.board.tiles[tile].resource, 1)
         
+        
     
     def place_settlement(self,vertex,player):
+           
+
             if (player.resources.get(TileResource.Brick) >=1) or (player.resources.get(TileResource.Lumber) >=1) or (player.resources.get(TileResource.Wool) >=1) or (player.resources.get(TileResource.Grain) >=1):
-                if self.board.vertices[vertex] == '':
-                    self.board.vertices.update({vertex: Building(BuildingType.Settlement,player)})
-                    player.add_settlement(vertex)
-                    player.remove_resource(TileResource.Brick,1)
-                    player.remove_resource(TileResource.Lumber,1)
-                    player.remove_resource(TileResource.Wool,1)
-                    player.remove_resource(TileResource.Grain,1)
-                    player.add_victory_point()
+                 if self.current_turn == 0:
+                    if self.board.vertices[vertex] == '':
+                        self.board.vertices.update({vertex: Building(BuildingType.Settlement,player)})
+                        player.add_settlement(vertex)
+                        player.add_victory_point()
+                    else:
+                        if self.board.vertices[vertex] == '':
+                            self.board.vertices.update({vertex: Building(BuildingType.Settlement,player)})
+                            player.add_settlement(vertex)
+                            player.remove_resource(TileResource.Brick,1)
+                            player.remove_resource(TileResource.Lumber,1)
+                            player.remove_resource(TileResource.Wool,1)
+                            player.remove_resource(TileResource.Grain,1)
+                            player.add_victory_point()
             else:
                 raise Exception("Not Enough Resources")            
-           
+            
+    def place_road(self,edge,player):
+        if (player.resources.get(TileResource.Brick) >=1) or (player.resources.get(TileResource.Lumber) >=1):
+            if self.current_turn == 0:
+                if self.board.edges[edge] == '':
+                        self.board.edges.update({edge: Road(player)})
+                        player.add_road(edge)
+                else:
+                    if self.board.edges[edge] == '':
+                        if self.edges[edge]:
+                            self.board.edges.update({edge: Road(player)})
+                            player.add_road(edge)
+                            player.remove_resource(TileResource.Brick,1)
+                            player.remove_resource(TileResource.Lumber,1)
+
+
+        
+            
+                   
+                        
+        
+        else:
+            raise Exception("Not Enough Resources")
 
     def upgrade_settlement(self,vertex,player):
         if player.resources.get((TileResource.Grain <= 2) and (TileResource.Ore <= 3) and ((TileResource.Wool <= 3) or (TileResource.Lumber <= 3) or (TileResource.Brick <= 3))):
@@ -84,18 +115,6 @@ class Game:
             player.add_city(vertex)
             player.add_victory_point()
             
-        else:
-            print("Not Enough Resources")
-
-    
-    def place_road(self,edge,player):
-        if player.resources.get((TileResource.Brick <= 1) and (TileResource.Lumber <= 1)):
-            if self.board.edges[edge] == '':
-                if self.edges[edge]:
-                    self.board.edges.update({edge: Road(player)})
-                    player.add_road(edge)
-                    player.remove_resource(TileResource.Brick,1)
-                    player.remove_resource(TileResource.Lumber,1)
         else:
             print("Not Enough Resources")
     
