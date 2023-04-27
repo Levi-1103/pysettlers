@@ -54,6 +54,13 @@
             "shape": "ellipse"
         }
         
+    },
+    "@roadButtons":
+    {
+        "misc":
+        {
+            "shape": "rectangle"
+        }
     }
     
 }

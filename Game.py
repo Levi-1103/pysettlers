@@ -111,7 +111,7 @@ class Game:
     def first_turn(self):
         pass
 
-    def trade_resource(self):
+    def trade_resource(self,current_player):
         pass
 
 

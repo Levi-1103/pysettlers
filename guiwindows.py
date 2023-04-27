@@ -188,17 +188,7 @@
 
 # #fill_empty_verts(board,empty_verts)
 
-# class TradeWindow(UIWindow):
-#     def __init__(self,manager):
-#         super().__init__(
-#             rect=pygame.Rect(SCREEN_WIDTH // 4 * 3, 0, SCREEN_WIDTH // 4, SCREEN_HEIGHT // 2),
-#             manager=manager,
-#             window_display_title="Trade",
-#             visible=0)
-        
-#     def on_close_window_button_pressed(self):
-#         self.hide()
-    
+
 
 # trade_window = TradeWindow(manager)
 

@@ -2,6 +2,7 @@ import pygame
 import pygame_gui
 from Game import *
 from drawHex import hexToPixel, vertToPixel
+from trade_window import TradeWindow
 
 pygame.init()
 
@@ -175,7 +176,9 @@ def game_loop(mode):
 
     empty_verts = []
     vert_buttons = []
+    road_buttons = []
 
+    trade_window = TradeWindow(manager,SCREEN_WIDTH,SCREEN_HEIGHT)
     
 
     fill_empty_verts(empty_verts,new_game.board)
@@ -189,7 +192,7 @@ def game_loop(mode):
             
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == trade_button:
-                    #trade_window.show()
+                    trade_window.show()
                     print('Trade')
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == end_turn_button:
@@ -198,7 +201,8 @@ def game_loop(mode):
                     vert_manager.clear_and_reset()
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == build_road_button:
-                    new_game.current_player.add_resource(TileResource.Brick, 1)
+                    vert_manager.clear_and_reset()
+                    print_road_buttons(verts_surface,new_game.current_player.settlements,vert_manager,road_buttons)
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == build_settlement_button:
                     print_empty_verts(verts_surface,empty_verts,vert_buttons,vert_manager)
@@ -219,8 +223,22 @@ def game_loop(mode):
                             #print(row[0])
                             try:
                                 new_game.place_settlement(row[0],new_game.current_player)
-                                row[1].visible = False
+                                #row[1].visible = False
+                                
+                                vert_manager.clear_and_reset()
+                                empty_verts.remove(row[0])
 
+                            except:
+                                pygame_gui.windows.UIMessageWindow(rect=pygame.Rect(100,100,100,100),html_message="Not Enough Resources!",manager=manager)
+            if event.type == pygame_gui.UI_BUTTON_PRESSED:
+                for row in road_buttons:
+                    for button in row:
+                        if event.ui_element == button:
+                            #print(row[0])
+                            try:
+                                new_game.place_road(row[0],new_game.current_player)
+                                vert_manager.clear_and_reset()
+                                road_buttons.clear()
                             except:
                                 pygame_gui.windows.UIMessageWindow(rect=pygame.Rect(100,100,100,100),html_message="Not Enough Resources!",manager=manager)
                                 
@@ -239,9 +257,6 @@ def game_loop(mode):
         
         window_surface.blit(background, (0, 0))
         print_player_verts(left_rect,new_game.players)
-
-        
-
 
         background.blit(left_rect, (0, 0))
         background.blit(right_rect, (left_rect_width, 0))
@@ -341,6 +356,7 @@ def fill_empty_verts(dest,board):
                         else:
                             dest.append(key)
 
+
 def print_player_verts(surface,players_list):
     x = 60
     y = 0
@@ -385,4 +401,26 @@ def print_empty_verts(surface,list,buttons,manager):
                                             text='',object_id=pygame_gui.core.ObjectID(class_id='@vertButtons'),
                                             manager=manager)))
 
+def print_road_buttons(surface,player_settlements,manager,road_buttons):
+    x = 60
+    y = 0
+    for settlement in player_settlements:
+        print(settlement)
+        for road in protrudes(settlement):
+
+            print(road)
+
+            if road.s == 'W':
+                road_buttons.append((road,pygame_gui.elements.UIButton(relative_rect=pygame.Rect((vertToPixel(75,road.q,road.r,-20,50)), (25, 25)),
+                                    text='',object_id=pygame_gui.core.ObjectID(class_id='@roadButtons'),
+                                    manager=manager)))
+            if road.s =='NW':
+                road_buttons.append((road,pygame_gui.elements.UIButton(relative_rect=pygame.Rect((vertToPixel(75,road.q,road.r,10,5)), (25, 25)),
+                                text='',object_id=pygame_gui.core.ObjectID(class_id='@roadButtons'),
+                                manager=manager)))
+            if road.s =='NE':
+                road_buttons.append((road,pygame_gui.elements.UIButton(relative_rect=pygame.Rect((vertToPixel(75,road.q,road.r,90,5)), (25, 25)),
+                                text='',object_id=pygame_gui.core.ObjectID(class_id='@roadButtons'),
+                                manager=manager)))
+    
 main_menu()
