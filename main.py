@@ -211,9 +211,9 @@ def game_loop(mode):
                 for row in vert_buttons:
                     for button in row:
                         if event.ui_element == button:
-                            print(row[0])
+                            #print(row[0])
                             new_game.place_settlement(row[0],new_game.current_player)
-                            button_manager.clear_and_reset()
+                            
 
                 # if event.ui_element == vert_buttons[0][1]:
                 #     print(vert_buttons[0][0])            
