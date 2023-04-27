@@ -3,9 +3,6 @@ import pygame_gui
 from Game import *
 from drawHex import hexToPixel, vertToPixel
 
-
-
-
 pygame.init()
 
 #Constants
