@@ -23,6 +23,8 @@ window_surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 background = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
 manager = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT),'theme.json')
+
+button_manager = pygame_gui.UIManager((SCREEN_WIDTH, SCREEN_HEIGHT),'theme.json')
 clock = pygame.time.Clock()
 
 
@@ -163,7 +165,7 @@ def game_loop(mode):
     grain_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 4,150,150),text="Grain: " + str(new_game.current_player.resources.get(TileResource.Grain)),manager=manager)
     wool_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 5,150,150),text="Wool: " + str(new_game.current_player.resources.get(TileResource.Wool)),manager=manager)
 
-    victory_points_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 6,250,150),text="Victory Points: " + str(new_game.current_player.victory_points),manager=manager)
+    victory_points_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 6,270,150),text="Victory Points: " + str(new_game.current_player.victory_points),manager=manager)
 
     draw_board(new_game.board, left_rect)
 
@@ -176,6 +178,7 @@ def game_loop(mode):
 
     while is_running:
         time_delta = clock.tick(60)/1000.0
+        new_game.check_winner()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_running = False
@@ -195,11 +198,7 @@ def game_loop(mode):
                 if event.ui_element == build_settlement_button:
                     print_verts(verts_surface,empty_verts,vert_buttons)
                     print("Build Settlement")
-                    print(vert_buttons[0][0])
 
-            # if event.type == pygame.MOUSEBUTTONDOWN:
-            #     if event.button == 1:
-            #         print("Test")  # Left mouse button
                             
                 
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
@@ -213,14 +212,17 @@ def game_loop(mode):
                     for button in row:
                         if event.ui_element == button:
                             print(row[0])
+                            new_game.place_settlement(row[0],new_game.current_player)
+                            button_manager.clear_and_reset()
 
                 # if event.ui_element == vert_buttons[0][1]:
                 #     print(vert_buttons[0][0])            
 
                 
-                
+            button_manager.process_events(event)
             manager.process_events(event)
 
+        button_manager.update(time_delta)
         manager.update(time_delta)
 
         
@@ -234,8 +236,9 @@ def game_loop(mode):
 
         update_labels(new_game, player_name_label, brick_label, lumber_label, ore_label, grain_label, wool_label, victory_points_label)
 
-
+        
         manager.draw_ui(window_surface)
+        button_manager.draw_ui(window_surface)
         pygame.display.update()
 
 def update_labels(new_game, player_name_label, brick_label, lumber_label, ore_label, grain_label, wool_label, victory_points_label):
@@ -334,10 +337,10 @@ def print_verts(surface,list,buttons):
             buttons.append((key,pygame_gui.elements.UIButton(relative_rect=pygame.Rect((vertToPixel(75,key.q,key.r,50,-10)), (25, 25)),
                                             text='',object_id=pygame_gui.core.ObjectID(class_id='@vertButtons'),
                                             manager=manager)))
-            pygame.draw.circle(surface,'#FF0000',vertToPixel(75,key.q,key.r,x,y),10)
+            #pygame.draw.circle(surface,'#FF0000',vertToPixel(75,key.q,key.r,x,y),10)
 
         if key.s =='S':
-            pygame.draw.circle(surface,'#FFFFFF',vertToPixel(75,key.q,key.r,x,y + 75 * 2),10)
+            #pygame.draw.circle(surface,'#FFFFFF',vertToPixel(75,key.q,key.r,x,y + 75 * 2),10)
             buttons.append((key,pygame_gui.elements.UIButton(relative_rect=pygame.Rect((vertToPixel(75,key.q,key.r,50,-10 + 75 * 2)), (25, 25)),
                                             text='',object_id=pygame_gui.core.ObjectID(class_id='@vertButtons'),
                                             manager=manager)))
