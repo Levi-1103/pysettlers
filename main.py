@@ -121,6 +121,7 @@ def mode_menu():
         pygame.display.update()
 
 
+
 def game_loop(mode):
     """Run main Screen"""
     
@@ -257,10 +258,12 @@ def game_loop(mode):
     trade_window = TradeWindow(manager, SCREEN_WIDTH, SCREEN_HEIGHT)
 
     fill_empty_verts(empty_verts, new_game.board)
-
+    
+        
+            
     while is_running:
         time_delta = clock.tick(60) / 1000.0
-        new_game.check_winner()
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 is_running = False
@@ -274,6 +277,14 @@ def game_loop(mode):
                     new_game.end_turn()
                     verts_surface.fill((255, 255, 255, 0))
                     vert_manager.clear_and_reset()
+                    new_game.check_winner()
+                    if new_game.winner != None:
+                        pygame_gui.windows.UIMessageWindow(
+                                                rect=pygame.Rect(100, 100, 100, 100),
+                                                html_message="Winner Is Player " + str(new_game.winner.name),
+                                                manager=manager,
+                                            )
+
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == build_road_button:
                     vert_manager.clear_and_reset()
@@ -356,11 +367,12 @@ def game_loop(mode):
             wool_label,
             victory_points_label,
         )
-
+        
         manager.draw_ui(window_surface)
         vert_manager.draw_ui(window_surface)
 
         pygame.display.update()
+        
 
 
 def update_labels(
@@ -677,6 +689,5 @@ def print_road_buttons(surface, player_settlements, manager, road_buttons):
                         ),
                     )
                 )
-
 
 main_menu()

@@ -8,6 +8,7 @@ Edge = namedtuple("Edge", "q r s")
 
 
 class Grid:
+    '''Class for creating a hexagon grid'''
     def __init__(self, size):
         self.tiles = {}
         self.edges = {}

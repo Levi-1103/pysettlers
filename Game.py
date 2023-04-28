@@ -41,7 +41,6 @@ class Game:
         for player in self.players:
             if player.victory_points == 10:
                 self.winner = player
-                print(self.winner)
                 return self.winner
 
     def end_turn(self):
