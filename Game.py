@@ -15,8 +15,6 @@ class Game:
         self.development_cards = {}
 
         self.players = [Player(1,'RED'), Player(2,'BLUE'),Player(3,'WHITE'),Player(4,'GREEN')]
-        # for i in range(playerNum):
-        #     self.players.append(Player(i + 1,'RED'))
 
         self.current_player_index = 0
         self.current_player = self.players[self.current_player_index]
@@ -39,8 +37,7 @@ class Game:
                 self.winner = player
                 print(self.winner)
                 return self.winner
-            
-
+    
     def end_turn(self):
         self.current_player_index = (self.current_player_index + 1) % len(self.players)
         self.current_player = self.players[self.current_player_index]
@@ -63,9 +60,7 @@ class Game:
             if self.board.tiles[tile].rollNum == roll:
                 print(self.board.tiles[tile].resource)
                 self.current_player.add_resource(self.board.tiles[tile].resource, 1)
-        
-        
-    
+          
     def place_settlement(self,vertex,player):
             if (player.resources.get(TileResource.Brick) >=1) or (player.resources.get(TileResource.Lumber) >=1) or (player.resources.get(TileResource.Wool) >=1) or (player.resources.get(TileResource.Grain) >=1):
                  if self.current_turn == 0:
@@ -99,12 +94,6 @@ class Game:
                             player.remove_resource(TileResource.Brick,1)
                             player.remove_resource(TileResource.Lumber,1)
 
-
-        
-            
-                   
-                        
-        
         else:
             raise Exception("Not Enough Resources")
 
@@ -126,21 +115,9 @@ class Game:
             print(player.resources)
             print("Victory Points", player.victory_points)
 
-    def first_turn(self):
-        pass
+
 
     def trade_resource(self,current_player):
         pass
 
-
-
-
-
-
-def print_board(newgame):
-    for tile in newgame.board.tiles.keys():
-        if newgame.board.tiles[tile] != 'Water':
-            for vert in corners(tile):
-                if newgame.board.vertices[vert] !='':
-                    print(vert)
 

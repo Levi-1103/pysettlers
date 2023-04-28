@@ -9,11 +9,11 @@ pygame.init()
 SCREEN_WIDTH = 1600
 SCREEN_HEIGHT = 900
 BLACK = (0, 0, 0)
-BLUE = (150, 150, 255)
+BLUE = (74,74,255)
 WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-GREEN = (0,128,0)
-GREY = 'gray'
+RED = (156,67,0)
+GREEN = (81,125,25)
+GREY = 	(123,111,131)
 
 
 pygame.display.set_caption('Settlers')
@@ -99,9 +99,10 @@ def mode_menu():
 
         manager.update(time_delta)
 
-        
         window_surface.blit(background, (0, 0))
         manager.draw_ui(window_surface)
+
+        
 
         pygame.display.update()
 
@@ -239,11 +240,6 @@ def game_loop(mode):
                                 road_buttons.clear()
                             except:
                                 pygame_gui.windows.UIMessageWindow(rect=pygame.Rect(100,100,100,100),html_message="Not Enough Resources!",manager=manager)
-                                
-                            
-
-                # if event.ui_element == vert_buttons[0][1]:
-                #     print(vert_buttons[0][0])            
 
                 
             vert_manager.process_events(event)
@@ -267,6 +263,8 @@ def game_loop(mode):
         
         manager.draw_ui(window_surface)
         vert_manager.draw_ui(window_surface)
+
+
         pygame.display.update()
 
 def update_labels(new_game, player_name_label, brick_label, lumber_label, ore_label, grain_label, wool_label, victory_points_label):
