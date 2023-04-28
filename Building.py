@@ -7,4 +7,3 @@ class Building:
     def __init__(self, buildingType, owner):
         self.buildingType = buildingType
         self.owner = owner
-        
