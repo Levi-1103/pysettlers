@@ -11,6 +11,8 @@ Settlers of catan game written using pygame
 
 ### Running using python
 
+-Clone repo
+
 - Make sure to have Python 3.10. I haven't been able to test using higher versions
 
 - Install pygame and pygame_gui
