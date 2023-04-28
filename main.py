@@ -13,6 +13,7 @@ BLUE = (150, 150, 255)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREEN = (0,128,0)
+GREY = 'gray'
 
 
 pygame.display.set_caption('Settlers')
@@ -117,7 +118,7 @@ def game_loop(mode):
     left_rect_width = SCREEN_WIDTH // 4 * 3
     left_rect_height = SCREEN_HEIGHT
     left_rect = pygame.Surface((left_rect_width, left_rect_height))
-    left_rect.fill(BLUE)
+    left_rect.fill(GREY)
 
     #sets up right side of screen
     right_rect_width = SCREEN_WIDTH // 4
@@ -167,7 +168,7 @@ def game_loop(mode):
     wool_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 5,150,150),text="Wool: " + str(new_game.current_player.resources.get(TileResource.Wool)),manager=manager)
 
     victory_points_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 6,270,150),text="Victory Points: " + str(new_game.current_player.victory_points),manager=manager)
-    dice_roll_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 6,270,150),text="Roll: " + str(new_game.current_player.victory_points),manager=manager)
+    dice_roll_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(x,y + yoffset * 7,270,150),text="Roll: ",manager=manager)
 
     draw_board(new_game.board, left_rect)
 
@@ -213,6 +214,7 @@ def game_loop(mode):
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == roll_dice_button:
                     new_game.roll_dice()
+                    dice_roll_label.set_text("Roll: " + str(new_game.current_roll))
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 for row in vert_buttons:
                     for button in row:
@@ -289,9 +291,14 @@ def import_assets():
     wool = pygame.image.load("assets\Wool.png").convert_alpha()
     water = pygame.image.load("assets\Hex.png").convert_alpha()
     menu_background = pygame.image.load("assets\menu_image.png").convert_alpha()
-    return desert,brick,grain,lumber,ore,wool,water, menu_background
+    rd_w = pygame.image.load("assets\Rd_w.png").convert_alpha()
+    rd_g = pygame.image.load("assets\Rd_g.png").convert_alpha()
+    rd_r = pygame.image.load("assets\Rd_r.png").convert_alpha()
+    rd_b = pygame.image.load("assets\Rd_b.png").convert_alpha()
 
-desert, brick, grain, lumber, ore, wool, water, menu_background = import_assets()
+    return desert,brick,grain,lumber,ore,wool,water, menu_background, rd_w,rd_g,rd_b,rd_r
+
+desert, brick, grain, lumber, ore, wool, water, menu_background, rd_w,rd_g,rd_b,rd_r = import_assets()
 
 def textureToVal(value):
     '''Converts resources for a tile into a texture'''
@@ -367,20 +374,53 @@ def print_player_verts(surface,players_list):
                     pygame.draw.circle(surface,player.color,vertToPixel(75,settlement.q,settlement.r,x,y + 75 * 2),10)
 
 def print_player_roads(surface,players_list):
-    x = 60
+    x = 0
     y = 0
+    
+    rd_r_nw = pygame.transform.rotate(rd_r,120)
+    rd_r_ne = pygame.transform.rotate(rd_r,-120)
+    rd_b_nw = pygame.transform.rotate(rd_b,120)
+    rd_b_ne = pygame.transform.rotate(rd_b,-120)
+    rd_w_nw = pygame.transform.rotate(rd_w,120)
+    rd_w_ne = pygame.transform.rotate(rd_w,-120)
+    rd_g_nw = pygame.transform.rotate(rd_g,120)
+    rd_g_ne = pygame.transform.rotate(rd_g,-120)
+
+
+
+
+    
     for edges in players_list:
         for player in players_list:
-            for road in player.roads:   
-                if road.s == 'W':
-                    pygame.draw.circle(surface,player.color,vertToPixel(75,road.q,road.r,x,y),10)
-                    pygame.draw.circle(surface,'#FF0000',vertToPixel(75,road.q,road.r,-15, 0),10)
-                if road.s =='NW':
-                    pygame.draw.circle(surface,player.color,vertToPixel(75,road.q,road.r,x,y + 75 * 2),10)
-                    pygame.draw.circle(surface,'#FFFFFF',vertToPixel(75,road.q,road.r,20,-50),10)
-                if road.s =='NE':
-                    pygame.draw.circle(surface,player.color,vertToPixel(75,road.q,road.r,x,y + 75 * 2),10)
-                    pygame.draw.circle(surface,'#000000',vertToPixel(75,road.q,road.r,70,-50),10)
+            for road in player.roads:
+                if player.color == 'RED':   
+                    if road.s == 'W':
+                        surface.blit(rd_r,vertToPixel(75,road.q,road.r,-13,50))
+                    if road.s =='NW':
+                        surface.blit(rd_r_nw,vertToPixel(75,road.q,road.r,0,0))
+                    if road.s =='NE':
+                        surface.blit(rd_r_ne,vertToPixel(75,road.q,road.r,75,0))
+                if player.color == 'BLUE':   
+                    if road.s == 'W':
+                        surface.blit(rd_b,vertToPixel(75,road.q,road.r,-13,50))
+                    if road.s =='NW':
+                        surface.blit(rd_b_nw,vertToPixel(75,road.q,road.r,0,0))
+                    if road.s =='NE':
+                        surface.blit(rd_b_ne,vertToPixel(75,road.q,road.r,75,0))
+                if player.color == 'WHITE':   
+                    if road.s == 'W':
+                        surface.blit(rd_w,vertToPixel(75,road.q,road.r,-13,50))
+                    if road.s =='NW':
+                        surface.blit(rd_w_nw,vertToPixel(75,road.q,road.r,0,0))
+                    if road.s =='NE':
+                        surface.blit(rd_w_ne,vertToPixel(75,road.q,road.r,75,0))
+                if player.color == 'GREEN':   
+                    if road.s == 'W':
+                        surface.blit(rd_g,vertToPixel(75,road.q,road.r,-13,50))
+                    if road.s =='NW':
+                        surface.blit(rd_g_nw,vertToPixel(75,road.q,road.r,0,0))
+                    if road.s =='NE':
+                        surface.blit(rd_g_ne,vertToPixel(75,road.q,road.r,75,0))
 
 def print_player_cities():
     pass
@@ -405,9 +445,6 @@ def print_road_buttons(surface,player_settlements,manager,road_buttons):
     for settlement in player_settlements:
         print(settlement)
         for road in protrudes(settlement):
-
-            print(road)
-
             if road.s == 'W':
                 road_buttons.append((road,pygame_gui.elements.UIButton(relative_rect=pygame.Rect((vertToPixel(75,road.q,road.r,-20,50)), (25, 25)),
                                     text='',object_id=pygame_gui.core.ObjectID(class_id='@roadButtons'),

@@ -21,6 +21,7 @@ class Game:
         self.current_player_index = 0
         self.current_player = self.players[self.current_player_index]
         self.current_turn = 0
+        self.current_roll = 0
         self.winner = None
         
     def start_game(self):
@@ -50,7 +51,7 @@ class Game:
         dice1 = random.randint(1,6)
         dice2 = random.randint(1,6)
         roll = dice1 + dice2
-        print("Roll this turn", roll)
+        self.current_roll = roll
 
         rolled_tiles = []
         
@@ -66,8 +67,6 @@ class Game:
         
     
     def place_settlement(self,vertex,player):
-           
-
             if (player.resources.get(TileResource.Brick) >=1) or (player.resources.get(TileResource.Lumber) >=1) or (player.resources.get(TileResource.Wool) >=1) or (player.resources.get(TileResource.Grain) >=1):
                  if self.current_turn == 0:
                     if self.board.vertices[vertex] == '':
