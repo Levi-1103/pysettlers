@@ -123,7 +123,7 @@ def mode_menu():
 
 def game_loop(mode):
     """Run main Screen"""
-
+    
     new_game = Game(4, mode)
     manager.clear_and_reset()
     is_running = True
@@ -148,7 +148,7 @@ def game_loop(mode):
     # set up buttons
     build_road_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect(
-            (SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 300), (100, 50)
+            (SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 300), (right_rect_width //2, 50)
         ),
         text="Build Road",
         tool_tip_text="Press to Build a Road. It costs : 1 Brick + 1 Lumber",
@@ -156,7 +156,7 @@ def game_loop(mode):
     )
     build_settlement_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect(
-            (SCREEN_WIDTH // 4 * 3 + 100, SCREEN_HEIGHT - 300), (100, 50)
+            (SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 350), (right_rect_width //2, 50)
         ),
         text="Build Settlement",
         tool_tip_text="Press to Build a Settlement It costs: 1 Brick + 1 Lumber + 1 Grain + 1 Wool",
@@ -164,14 +164,14 @@ def game_loop(mode):
     )
     upgrade_settlement_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect(
-            (SCREEN_WIDTH // 4 * 3 + 200, SCREEN_HEIGHT - 300), (100, 50)
+            (SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 400), (right_rect_width //2, 50)
         ),
         text="Upgrade Settlement",
         manager=manager,
     )
     trade_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect(
-            (SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 200), (100, 50)
+            (SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 200), (right_rect_width //2, 50)
         ),
         text="Trade",
         tool_tip_text="Press To Bring Up Trade Menu",
@@ -179,7 +179,7 @@ def game_loop(mode):
     )
     end_turn_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect(
-            (SCREEN_WIDTH // 4 * 3 + 100, SCREEN_HEIGHT - 100), (100, 50)
+            (SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 100), (right_rect_width //2, 50)
         ),
         text="End Turn",
         tool_tip_text="Press To End Your Turn",
@@ -187,7 +187,7 @@ def game_loop(mode):
     )
     roll_dice_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect(
-            (SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 100), (100, 50)
+            (SCREEN_WIDTH // 4 * 3, SCREEN_HEIGHT - 150), (right_rect_width //2, 50)
         ),
         text="Roll Dice",
         tool_tip_text="Roll Dice To Get Resources",
